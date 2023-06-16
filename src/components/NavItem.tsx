@@ -10,7 +10,7 @@ interface Props {
 
 const NavItem: FunctionComponent<Props> = ({children, href, onClick}) => (
     href ? <Link href={href}><Button variant="subtle" size='sm' className='text-black'>{children}</Button></Link> :
-        <Button variant="subtle" size='sm' className='text-black' onClick={onClick}>{children}</Button>
+        <button className='text-black' onClick={onClick}>{children}</button>
 )
 
 export default NavItem;
