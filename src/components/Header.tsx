@@ -19,7 +19,7 @@ const Header: NextComponentType = () => {
                 <Image
                     src='/logo.svg'
                      alt='' height={64} width={64}/>
-                <h1 className='text-3xl'>BROCADE OFFICIAL</h1>
+                <h1 className='text-[64px] font-play text-black font-bold'>BROCADE OFFICIAL</h1>
             </div>
             <div className='flex flex-row items-center'>
                 <NavItem onClick={spotlight.open}><IconSearch className='scale-125'/></NavItem>
