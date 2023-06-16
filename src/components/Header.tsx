@@ -9,8 +9,6 @@ import {
     IconShoppingCart,
     IconUser
 } from "@tabler/icons-react";
-import {Button} from "@mantine/core";
-import Link from "next/link";
 import NavItem from "~/components/NavItem";
 
 const Header: NextComponentType = () => {
@@ -23,12 +21,12 @@ const Header: NextComponentType = () => {
                 <h1 className='text-3xl'>BROCADE OFFICIAL</h1>
             </div>
             <div className='flex flex-row items-center'>
-                <NavItem href=''><IconSearch/></NavItem>
-                <NavItem href=''><IconHeartFilled/></NavItem>
-                <NavItem href=''><IconShoppingCart/></NavItem>
-                <NavItem href=''><IconUser/></NavItem>
-                <NavItem href=''><IconHeadphonesFilled/></NavItem>
-                <NavItem href=''><IconMenu2/></NavItem>
+                <NavItem href=''><IconSearch className='scale-125'/></NavItem>
+                <NavItem href=''><IconHeartFilled className='scale-125'/></NavItem>
+                <NavItem href=''><IconShoppingCart className='scale-125'/></NavItem>
+                <NavItem href=''><IconUser className='scale-125'/></NavItem>
+                <NavItem href=''><IconHeadphonesFilled className='scale-125'/></NavItem>
+                <NavItem href=''><IconMenu2 className='scale-125'/></NavItem>
             </div>
         </header>
     );
