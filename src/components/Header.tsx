@@ -10,6 +10,7 @@ import {
     IconUser
 } from "@tabler/icons-react";
 import NavItem from "~/components/NavItem";
+import {spotlight} from "@mantine/spotlight";
 
 const Header: NextComponentType = () => {
     return (
@@ -21,12 +22,12 @@ const Header: NextComponentType = () => {
                 <h1 className='text-3xl'>BROCADE OFFICIAL</h1>
             </div>
             <div className='flex flex-row items-center'>
-                <NavItem href=''><IconSearch className='scale-125'/></NavItem>
-                <NavItem href=''><IconHeartFilled className='scale-125'/></NavItem>
-                <NavItem href=''><IconShoppingCart className='scale-125'/></NavItem>
-                <NavItem href=''><IconUser className='scale-125'/></NavItem>
+                <NavItem onClick={spotlight.open}><IconSearch className='scale-125'/></NavItem>
+                <NavItem href='favourites'><IconHeartFilled className='scale-125'/></NavItem>
+                <NavItem href='cart'><IconShoppingCart className='scale-125'/></NavItem>
+                <NavItem href='profile'><IconUser className='scale-125'/></NavItem>
                 <NavItem href=''><IconHeadphonesFilled className='scale-125'/></NavItem>
-                <NavItem href=''><IconMenu2 className='scale-125'/></NavItem>
+                <NavItem><IconMenu2 className='scale-125'/></NavItem>
             </div>
         </header>
     );
