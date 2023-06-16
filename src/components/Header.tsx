@@ -10,6 +10,8 @@ import {
     IconUser
 } from "@tabler/icons-react";
 import {Button} from "@mantine/core";
+import Link from "next/link";
+import NavItem from "~/components/NavItem";
 
 const Header: NextComponentType = () => {
     return (
@@ -21,12 +23,12 @@ const Header: NextComponentType = () => {
                 <h1 className='text-3xl'>BROCADE OFFICIAL</h1>
             </div>
             <div className='flex flex-row items-center'>
-                <Button variant="subtle" size='lg' className='text-black'><IconSearch/></Button>
-                <Button variant="subtle" size='lg' className='text-black'><IconHeartFilled/></Button>
-                <Button variant="subtle" size='lg' className='text-black'><IconShoppingCart/></Button>
-                <Button variant="subtle" size='lg' className='text-black'><IconUser/></Button>
-                <Button variant="subtle" size='lg' className='text-black'><IconHeadphonesFilled/></Button>
-                <Button variant="subtle" size='lg' className='text-black'><IconMenu2/></Button>
+                <NavItem href=''><IconSearch/></NavItem>
+                <NavItem href=''><IconHeartFilled/></NavItem>
+                <NavItem href=''><IconShoppingCart/></NavItem>
+                <NavItem href=''><IconUser/></NavItem>
+                <NavItem href=''><IconHeadphonesFilled/></NavItem>
+                <NavItem href=''><IconMenu2/></NavItem>
             </div>
         </header>
     );
