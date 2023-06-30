@@ -1,5 +1,5 @@
 import {ActionIcon, Container, createStyles, rem, Text} from '@mantine/core';
-import {IconBrandFacebook, IconBrandInstagram, IconBrandTwitter, IconBrandYoutube} from "@tabler/icons-react";
+import {IconBrandFacebook, IconBrandInstagram, IconBrandTwitter} from "@tabler/icons-react";
 
 const useStyles = createStyles((theme) => ({
     footer: {
@@ -99,12 +99,12 @@ const useStyles = createStyles((theme) => ({
 interface FooterLinksProps {
     data: {
         title: string;
-        links: { label: string; link: string }[];
+        links: { label: string; link: string }[]
     }[];
 }
 
 function FooterLinks({data}: FooterLinksProps) {
-    const {classes} = useStyles();
+    const {classes} = useStyles()
 
     const groups = data.map((group) => {
         const links = group.links.map((link, index) => (
@@ -117,15 +117,15 @@ function FooterLinks({data}: FooterLinksProps) {
             >
                 {link.label}
             </Text>
-        ));
+        ))
 
         return (
             <div className={classes.wrapper} key={group.title}>
                 <Text className={classes.title}>{group.title}</Text>
                 {links}
             </div>
-        );
-    });
+        )
+    })
 
     return (
         <footer className={classes.footer}>
