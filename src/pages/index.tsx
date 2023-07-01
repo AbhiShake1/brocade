@@ -1,9 +1,11 @@
 import Head from "next/head";
 import {api} from "~/utils/api";
 import {Carousel} from "@mantine/carousel";
-import {rem, Image, Grid} from "@mantine/core";
+import {Grid, Image, rem} from "@mantine/core";
 import {IconArrowLeft, IconArrowRight} from "@tabler/icons-react";
 import ProductItem from "~/components/ProductItem";
+import type {FunctionComponent} from "react";
+import ShopByCategoryItem from "~/components/ShopByCategoryItem";
 
 const images: string[] = [
     'https://www.promostyl.com/wp-content/uploads/2019/06/fenty-brand-campaign-002-without-logo-url-glen-luchford-1558621091.jpg',
@@ -12,11 +14,25 @@ const images: string[] = [
     'https://www.promostyl.com/wp-content/uploads/2019/06/fenty-brand-campaign-002-without-logo-url-glen-luchford-1558621091.jpg',
 ];
 
+const ShopByCategorySection: FunctionComponent = () => {
+    return <Grid className='p-36 bg-blue-300'>
+        <Grid.Col span={4}>
+            <ShopByCategoryItem/>
+        </Grid.Col>
+        <Grid.Col span={4}>
+            <ShopByCategoryItem/>
+        </Grid.Col>
+        <Grid.Col span={4}>
+            <ShopByCategoryItem/>
+        </Grid.Col>
+    </Grid>
+}
+
 export default function Home() {
     const hello = api.example.hello.useQuery({text: "from tRPC"});
     const slides = images.map((url) => (
         <Carousel.Slide key={url}>
-            <Image src={url} />
+            <Image src={url}/>
         </Carousel.Slide>
     ));
 
@@ -64,6 +80,7 @@ export default function Home() {
                             <ProductItem/>
                         </Grid.Col>
                     </Grid>
+                    <ShopByCategorySection/>
                 </div>
             </main>
         </>
