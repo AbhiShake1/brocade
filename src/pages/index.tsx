@@ -6,6 +6,7 @@ import {IconArrowLeft, IconArrowRight} from "@tabler/icons-react";
 import ProductItem from "~/components/ProductItem";
 import type {FunctionComponent} from "react";
 import ShopByCategoryItem from "~/components/ShopByCategoryItem";
+import ShopTheLookItem from "~/components/ShopTheLookItem";
 
 const images: string[] = [
     'https://www.promostyl.com/wp-content/uploads/2019/06/fenty-brand-campaign-002-without-logo-url-glen-luchford-1558621091.jpg',
@@ -15,7 +16,7 @@ const images: string[] = [
 ];
 
 const ShopByCategorySection: FunctionComponent = () => {
-    return <Grid className='p-36 bg-blue-300'>
+    return <Grid className='px-36'>
         <Grid.Col span={4}>
             <ShopByCategoryItem/>
         </Grid.Col>
@@ -24,6 +25,20 @@ const ShopByCategorySection: FunctionComponent = () => {
         </Grid.Col>
         <Grid.Col span={4}>
             <ShopByCategoryItem/>
+        </Grid.Col>
+    </Grid>
+}
+
+const ShopTheLookSection: FunctionComponent = () => {
+    return <Grid className='px-36'>
+        <Grid.Col span={4}>
+            <ShopTheLookItem/>
+        </Grid.Col>
+        <Grid.Col span={4}>
+            <ShopTheLookItem/>
+        </Grid.Col>
+        <Grid.Col span={4}>
+            <ShopTheLookItem/>
         </Grid.Col>
     </Grid>
 }
@@ -81,6 +96,7 @@ export default function Home() {
                         </Grid.Col>
                     </Grid>
                     <ShopByCategorySection/>
+                    <ShopTheLookSection/>
                 </div>
             </main>
         </>
