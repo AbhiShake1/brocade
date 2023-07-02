@@ -6,7 +6,7 @@ interface Props {
 }
 
 const ProductPreview: FunctionComponent<Props> = ({imageUrls}) => {
-    const [activeUrl, setActiveUrl] = useState(imageUrls[0])
+    const [activeUrl, setActiveUrl] = useState(imageUrls[0] || '')
     return (
         <>
             <div className="flex flex-col justify-start gap-1 relative w-1/6 items-center">
@@ -20,7 +20,7 @@ const ProductPreview: FunctionComponent<Props> = ({imageUrls}) => {
                 ))}
             </div>
             <Image
-                src={activeUrl || ''}
+                src={activeUrl}
                 alt={''}
                 height={1080}
                 width={1080}
