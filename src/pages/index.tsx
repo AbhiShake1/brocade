@@ -1,7 +1,7 @@
 import Head from "next/head";
 import {api} from "~/utils/api";
 import {Carousel} from "@mantine/carousel";
-import {Grid, Image, rem} from "@mantine/core";
+import {Grid, Image, rem, TextInput} from "@mantine/core";
 import {IconArrowLeft, IconArrowRight} from "@tabler/icons-react";
 import ProductItem from "~/components/ProductItem";
 import type {FunctionComponent} from "react";
@@ -41,6 +41,32 @@ const ShopTheLookSection: FunctionComponent = () => {
             <ShopTheLookItem/>
         </Grid.Col>
     </Grid>
+}
+
+const SubscribeSection: FunctionComponent = () => {
+    return <div className='pt-2 pb-8 flex-col space-y-2 justify-center items-center bg-gradient-to-r from-pink-950 via-gray-800 to-pink-950'>
+        <div className="text-center text-5xl font-['Montserrat'] font-bold text-white self-start">
+            Subscribe
+        </div>
+        <div className="flex flex-row gap-8 relative w-full justify-center items-center">
+            <TextInput
+                placeholder="Name"
+                size='xl'
+                withAsterisk
+                required
+            />
+            <TextInput
+                placeholder="E-Mail"
+                size='xl'
+                withAsterisk
+                required
+            />
+            <button className="bg-[#0a232d] flex flex-col justify-center relative h-16 items-center px-20 text-center text-2xl font-['Montserrat'] font-semibold text-white hover:bg-white hover:text-black transition-colors ease-in duration-500">
+                Join
+            </button>
+        </div>
+    </div>
+
 }
 
 export default function Home() {
@@ -97,6 +123,7 @@ export default function Home() {
                     </Grid>
                     <ShopByCategorySection/>
                     <ShopTheLookSection/>
+                    <SubscribeSection/>
                 </div>
             </main>
         </>
