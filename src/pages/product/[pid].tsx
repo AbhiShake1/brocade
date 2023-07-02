@@ -1,5 +1,6 @@
-import React, {FunctionComponent} from 'react';
-import {Progress, Rating} from "@mantine/core";
+import React, {type FunctionComponent, useState} from 'react';
+import {Chip, Progress, Rating} from "@mantine/core";
+import ProductPreview from "~/components/ProductPreview";
 
 interface RatingBarProps {
     rating: number
@@ -93,7 +94,7 @@ function ReviewsSection() {
 const RatingBar: FunctionComponent<RatingBarProps> = ({rating, reviewCount}) => {
     return <div className='flex flex-row space-x-4 items-center justify-end'>
         <Rating value={rating} count={rating} readOnly size='lg'/>
-        <Progress value={reviewCount} className='h-3 bg-gray-400 w-36 bg-opacity-30' color='red' />
+        <Progress value={reviewCount} className='h-3 bg-gray-400 w-36 bg-opacity-30' color='red'/>
         <div className="text-2xl font-['Circular_Std'] leading-[12.8px] text-[#4f4f4f] relative">
             {reviewCount}
         </div>
@@ -108,7 +109,8 @@ function CustomerReviewsStarSection() {
         </div>
         <div className='flex flex-row space-x-8 items-center'>
             <div>
-                <div className="flex flex-row justify-start gap-px items-center ml-3 text-6xl font-['Circular_Std'] leading-[35.1px] text-[#222222] self-end relative mb-1 mr-12">
+                <div
+                    className="flex flex-row justify-start gap-px items-center ml-3 text-6xl font-['Circular_Std'] leading-[35.1px] text-[#222222] self-end relative mb-1 mr-12">
                     4.3
                 </div>
                 <div className="flex flex-row justify-start ml-3 gap-px relative items-center">
@@ -130,35 +132,17 @@ function CustomerReviewsStarSection() {
 }
 
 const Index = () => {
+    const [size, setSize] = useState('S');
+
     return (
-        <div className="overflow-hidden flex flex-col justify-end gap-2 relative w-full items-start pt-6 pb-4 px-12">
-            <div className="flex flex-row justify-start mb-16 gap-10 relative w-5/6 items-center">
-                <div className="flex flex-col justify-start gap-1 relative w-1/6 items-center">
-                    <img
-                        src="https://file.rendit.io/n/EIBZfPJtjuEStvRvNGqA.png"
-                        className="min-h-0 min-w-0 relative"
-                    />
-                    <img
-                        src="https://file.rendit.io/n/sGHNReNEpZkhQ4Z34ZRH.svg"
-                        className="min-h-0 min-w-0 mb-5 relative w-16"
-                    />
-                    <img
-                        src="https://file.rendit.io/n/NETDsFkUmG8GUV8koPAH.png"
-                        className="min-h-0 min-w-0 mb-6 relative"
-                    />
-                    <img
-                        src="https://file.rendit.io/n/d9EGT8btXEr5wo4mVWZJ.png"
-                        className="min-h-0 min-w-0 mb-6 relative"
-                    />
-                    <img
-                        src="https://file.rendit.io/n/o52wnRDuFxw2cEhbfIDP.png"
-                        className="min-h-0 min-w-0 relative"
-                    />
-                </div>
-                <img
-                    src="https://file.rendit.io/n/sLEjVt1OMKNOcIRjM344.png"
-                    className="min-h-0 min-w-0 mr-3 relative"
-                />
+        <div className="overflow-hidden flex flex-col gap-2 relative w-full items-start pt-6 pb-4 px-12">
+            <div className="flex flex-row justify-start mb-16 gap-10 relative w-5/6 items-start">
+                <ProductPreview imageUrls={[
+                    'https://file.rendit.io/n/EIBZfPJtjuEStvRvNGqA.png',
+                    'https://file.rendit.io/n/NETDsFkUmG8GUV8koPAH.png',
+                    'https://file.rendit.io/n/d9EGT8btXEr5wo4mVWZJ.png',
+                    'https://file.rendit.io/n/o52wnRDuFxw2cEhbfIDP.png',
+                ]}/>
                 <div className="self-end flex flex-col justify-start mb-3 gap-px relative w-2/5 h-[852px] items-start">
                     <div
                         className="whitespace-nowrap text-2xl font-['Montserrat'] tracking-[0.72] text-[#2e96ad] relative mb-4 ml-5">
@@ -184,37 +168,14 @@ const Index = () => {
                         src="https://file.rendit.io/n/1fenC1C0hVX3RX9wXTJH.svg"
                         className="min-h-0 min-w-0 relative w-16 mb-3 ml-5"
                     />
-                    <div className="flex flex-row justify-start gap-4 relative items-center mb-8 ml-5">
-                        <div
-                            className="bg-[#d9d9d9] flex flex-col justify-center relative w-12 shrink-0 h-12 items-center mt-px mr-px rounded-lg">
-                            <div className="text-2xl font-['Montserrat'] tracking-[0.72] text-black relative">
-                                S
-                            </div>
-                        </div>
-                        <div
-                            className="bg-[#d9d9d9] flex flex-col justify-center relative w-12 shrink-0 h-12 items-center rounded-lg">
-                            <div className="text-2xl font-['Montserrat'] tracking-[0.72] text-black relative">
-                                M
-                            </div>
-                        </div>
-                        <div
-                            className="bg-[#264653] flex flex-col justify-center mr-px relative w-12 shrink-0 h-12 items-center rounded-lg">
-                            <div className="text-2xl font-['Montserrat'] tracking-[0.72] text-white relative">
-                                L
-                            </div>
-                        </div>
-                        <div
-                            className="bg-[#d9d9d9] flex flex-col justify-center mr-px relative w-12 shrink-0 h-12 items-center rounded-lg">
-                            <div className="text-2xl font-['Montserrat'] tracking-[0.72] text-black relative">
-                                XL
-                            </div>
-                        </div>
-                        <div
-                            className="bg-[#d9d9d9] flex flex-col justify-center relative w-20 shrink-0 h-12 items-center rounded-lg">
-                            <div className="text-2xl font-['Montserrat'] tracking-[0.72] text-black relative">
-                                XXL
-                            </div>
-                        </div>
+                    <div className='flex flex-row space-x-4 mb-4'>
+                        <Chip.Group value={size} onChange={value => setSize(value?.toString())}>
+                            <Chip value="S" size='xl' variant='filled' radius='sm' color='dark'>S</Chip>
+                            <Chip value="M" size='xl' variant='filled' radius='sm' color='dark'>M</Chip>
+                            <Chip value="L" size='xl' variant='filled' radius='sm' color='dark'>L</Chip>
+                            <Chip value="XL" size='xl' variant='filled' radius='sm' color='dark'>XL</Chip>
+                            <Chip value="XXL" size='xl' variant='filled' radius='sm' color='dark'>XXL</Chip>
+                        </Chip.Group>
                     </div>
                     <div className="text-2xl font-['Montserrat'] tracking-[0.72] text-black relative mb-px ml-5">
                         Color
