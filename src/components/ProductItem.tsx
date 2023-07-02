@@ -6,8 +6,8 @@ import {useRouter} from "next/router";
 interface Props {}
 
 const ProductItem: FunctionComponent<Props> = () => {
-    const {replace} = useRouter()
-    return <button onClick={()=>void replace(`product/1`)}>
+    const {push} = useRouter()
+    return <button onClick={()=>void push(`product/1`)}>
         <div className="w-[269px] h-[331px] relative">
             <div
                 className="w-[269px] h-[331px] left-0 top-0 absolute bg-zinc-300 bg-opacity-30 rounded-3xl shadow backdrop-blur-[15px]"></div>
