@@ -22,15 +22,17 @@ const Header: NextComponentType = () => {
                         src='/search.svg'
                         alt='' height={3} width={36}/>
                 </NavItem>
-                <NavItem href='favourites'>
+                <NavItem href='/favourites'>
                     <Image
                         src='/fav.svg'
                         alt='' height={36} width={36}/>
                 </NavItem>
-                <Image
-                    src='/cart.svg'
-                    alt='' height={36} width={36}/>
-                <NavItem href='profile'>
+                <NavItem href='/cart'>
+                    <Image
+                        src='/cart.svg'
+                        alt='' height={36} width={36}/>
+                </NavItem>
+                <NavItem href='/profile'>
                     <Image
                         src='/profile.svg'
                         alt='' height={36} width={36}/>
