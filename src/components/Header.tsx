@@ -2,7 +2,8 @@ import React from 'react';
 import type {NextComponentType} from "next";
 import Image from "next/image";
 import NavItem from "~/components/NavItem";
-import {spotlight} from "@mantine/spotlight";
+import {modals} from "@mantine/modals";
+import FilterModal from "~/components/modals/FilterModal";
 
 const Header: NextComponentType = () => {
     return (
@@ -14,7 +15,9 @@ const Header: NextComponentType = () => {
                 <h1 className='text-[36px] font-play text-black font-bold'>BROCADE OFFICIAL</h1>
             </div>
             <div className='flex flex-row items-center space-x-2'>
-                <NavItem onClick={spotlight.open}>
+                <NavItem onClick={() => modals.open({
+                    children: <FilterModal/>
+                })}>
                     <Image
                         src='/search.svg'
                         alt='' height={3} width={36}/>
@@ -39,8 +42,8 @@ const Header: NextComponentType = () => {
                 </NavItem>
                 <NavItem>
                     <Image className='ml-4'
-                        src='/menu.svg'
-                        alt='' height={36} width={36}/>
+                           src='/menu.svg'
+                           alt='' height={36} width={36}/>
                 </NavItem>
             </div>
         </header>
