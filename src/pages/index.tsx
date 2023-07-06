@@ -1,15 +1,15 @@
 import Head from "next/head";
 import {api} from "~/utils/api";
 import {Carousel} from "@mantine/carousel";
-import {Alert, Button, Checkbox, Grid, Image, TextInput, Timeline} from "@mantine/core";
+import {Alert, Button, Checkbox, Grid, Image, Table, TextInput, Timeline} from "@mantine/core";
 import {IconArrowLeft, IconArrowRight} from "@tabler/icons-react";
 import ProductItem from "~/components/ProductItem";
 import type {FunctionComponent} from "react";
 import ShopByCategoryItem from "~/components/ShopByCategoryItem";
 import ShopTheLookItem from "~/components/ShopTheLookItem";
-import { useRef, useState } from 'react';
-import { createStyles, NumberInput, type NumberInputHandlers, ActionIcon, rem } from '@mantine/core';
-import { IconPlus, IconMinus } from '@tabler/icons-react';
+import {useRef, useState} from 'react';
+import {createStyles, NumberInput, type NumberInputHandlers, ActionIcon, rem} from '@mantine/core';
+import {IconPlus, IconMinus} from '@tabler/icons-react';
 
 const images: string[] = [
     'https://www.promostyl.com/wp-content/uploads/2019/06/fenty-brand-campaign-002-without-logo-url-glen-luchford-1558621091.jpg',
@@ -89,143 +89,138 @@ const GiftCardSection: FunctionComponent = () => {
             <Timeline.Item title="Dispatched for delivery" className='text-3xl font-["Play"] leading-[8px] w-full'/>
             <Timeline.Item title="Delivered" className='text-3xl font-["Play"] leading-[8px] w-full'/>
         </Timeline>
-        <div className="overflow-hidden bg-white flex flex-col justify-end pt-16 gap-1 w-full items-start">
-            <div className='flex flex-col space-y-4'>
-                <div className='flex flex-row space-x-12'>
-                    <Checkbox size='xl' color='dark' checked={true}/>
-                    <div className="text-3xl font-['Play']">
-                        All
-                    </div>
+        <div className="flex flex-row justify-start gap-6 items-start pt-8">
+            <img
+                src="https://file.rendit.io/n/NuwJAl5Ml4449AemENtf.svg"
+                className="min-h-0 min-w-0 mb-2 w-10 shrink-0"
+            />
+            <div className="text-3xl font-['Play'] font-bold">
+                Brocade Official
+            </div>
+        </div>
+        <Table>
+            <thead>
+            <tr>
+                <th className='max-w-[0px]'><Checkbox size='xl' color='dark' checked={true} label='All'/></th>
+                <th>
                     <div className="text-3xl font-['Play']">
                         Item
                     </div>
+                </th>
+                <th>
+                    <div className="text-3xl font-['Play']">
+                        Size
+                    </div>
+                </th>
+                <th>
                     <div className="text-3xl font-['Play']">
                         Price
                     </div>
+                </th>
+                <th>
                     <div className="text-3xl font-['Play']">
                         Qty
                     </div>
+                </th>
+                <th>
                     <div className="text-3xl font-['Play']">
                         Total
                     </div>
-                </div>
-                <div className="flex flex-row justify-between ml-16">
-                    <div className="text-3xl font-['Play'] font-bold">
-                        Add on items
-                    </div>
-                    <Button color='dark' variant='outline'>Pick</Button>
-                </div>
-                <div className="flex flex-row justify-start gap-6 items-start">
-                    <img
-                        src="https://file.rendit.io/n/NuwJAl5Ml4449AemENtf.svg"
-                        className="min-h-0 min-w-0 mb-2 w-10 shrink-0"
-                    />
-                    <div className="text-3xl font-['Play'] font-bold">
-                        Brocade Official
-                    </div>
-                </div>
-                <div className="self-stretch flex flex-row justify-start items-center space-x-6">
-                    <Checkbox size='xl' color='dark' checked={true}/>
-                    <img
-                        src="https://file.rendit.io/n/ygFupjPO0qx44IeMKfN0.png"
-                        className="min-h-0 min-w-0 self-center mr-12"
-                    />
-                    <Alert variant='filled' radius='xl' color='dark'>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr key='key'>
+                <td><Checkbox size='xl' color='dark' checked={true}/></td>
+                <td><img src="https://file.rendit.io/n/ygFupjPO0qx44IeMKfN0.png"/></td>
+                <td>
+                    <Alert variant='filled' radius='xl' color='dark' className='max-w-[108px]'>
                         <h4 className='px-8'>XS</h4>
                     </Alert>
-                    <div className="font-['Play'] font-bold">
+                </td>
+                <td>
+                    <div className="font-['Play'] font-bold text-2xl">
                         Rs. 2500
                     </div>
-                    <QuantityInput/>
-                    <div className="self-center flex flex-col justify-start gap-16 w-2/5 h-20 items-start">
-                        <div className="font-['Play'] font-bold leading-[24.8px] ml-6 w-32 h-[21.69%]">
-                            Rs. 2500
-                        </div>
-                        <div className="text-right text-xs font-['Circular_Std'] leading-[8px] text-[#9b9b9b] self-stretch h-[7.23%]">
-                            August 13, 2019
-                        </div>
+                </td>
+                <td>
+                    <div className='w-28'>
+                        <QuantityInput/>
                     </div>
-                </div>
-            </div>
-            <div className="self-stretch flex flex-row justify-between items-center mb-3 ml-12 mr-64">
-                <div className="text-4xl font-['Play'] leading-[8px] w-[393px] shrink-0 h-full">
-                    Order Summary
-                </div>
-                <button className="flex flex-row justify-start gap-1 w-16 shrink-0 items-center">
-                    <div className="text-xs font-['Circular_Std'] leading-[13.8px] text-[#9b9b9b] w-3/5 h-[58.13%]">
-                        Helpful
+                </td>
+                <td>
+                    <div className="font-['Play'] font-bold text-2xl">
+                        Rs. 2500
                     </div>
-                    <img
-                        src="https://file.rendit.io/n/UFUzoL5CKf4TRNSY9zB6.svg"
-                        className="min-h-0 min-w-0 w-6 shrink-0"
-                    />
-                </button>
+                </td>
+            </tr>
+            </tbody>
+        </Table>
+        <div className="overflow-hidden bg-white flex flex-col justify-end pt-16 gap-1 w-full items-start">
+            {/*<div className='flex flex-col space-y-4'>*/}
+            {/*    <div className="flex flex-row justify-between ml-16">*/}
+            {/*        <div className="text-3xl font-['Play'] font-bold">*/}
+            {/*            Add on items*/}
+            {/*        </div>*/}
+            {/*        <Button color='dark' variant='outline'>Pick</Button>*/}
+            {/*    </div>*/}
+            {/*</div>*/}
+            <div className="text-2xl font-['Play'] leading-[8px] w-[463px] h-[2.04%] mb-6 ml-12 mt-4">
+                We Accept Khalti
             </div>
-            <div className="flex flex-row justify-between w-3/5 items-center mb-4 ml-12">
-                <div className="text-3xl font-['Play'] leading-[8px] mt-1 w-40 shrink-0 h-full">
-                    Subtotal
-                </div>
-                <div className="font-['Play'] font-bold leading-[24.8px] self-start w-32 shrink-0 h-[50%]">
-                    Rs. 7500
-                </div>
-            </div>
-            <div className="overflow-hidden bg-black flex flex-col justify-start items-center mb-16 ml-[361px] px-8 rounded">
-                <div className="text-xs font-['Open_Sans'] leading-[18.6px] text-white w-full">
-                    Checkout
-                </div>
-            </div>
-            <div className="text-2xl font-['Play'] leading-[8px] w-[463px] h-[2.04%] mb-6 ml-12">
-                We Accept <br />
-                <br />
-                <br /> Khalti
-            </div>
-            <div className="bg-[#161214] self-stretch flex flex-row justify-start gap-12 h-[326px] shrink-0 items-start mb-0 ml-[-12px] px-[115px] py-16">
-                <div className="self-end relative flex flex-col justify-start mb-px pb-40 w-[142px] shrink-0 items-stretch">
-                    <div className="w-[142px] h-[85.27%] text-sm font-sans leading-[30px] text-white absolute top-6 left-0">
+            <div
+                className="bg-[#161214] self-stretch flex flex-row justify-start gap-12 h-[326px] shrink-0 items-start mb-0 ml-[-12px] px-[115px] py-16">
+                <div
+                    className="self-end relative flex flex-col justify-start mb-px pb-40 w-[142px] shrink-0 items-stretch">
+                    <div
+                        className="w-[142px] h-[85.27%] text-sm font-sans leading-[30px] text-white absolute top-6 left-0">
                         Boudha
                         {"     "}
-                        <br />
+                        <br/>
                         Jhamsikhel
-                        <br />
+                        <br/>
                         Pokhara
-                        <br />
+                        <br/>
                         Chitwan
                     </div>
-                    <div className="text-2xl font-['Morganite'] font-semibold tracking-[2] uppercase text-white mr-8 h-full">
+                    <div
+                        className="text-2xl font-['Morganite'] font-semibold tracking-[2] uppercase text-white mr-8 h-full">
                         Flagship Stores
-                        <br />
+                        <br/>
                     </div>
                 </div>
                 <div className="self-end flex flex-col justify-start mr-12 gap-3 items-stretch">
-                    <div className="text-2xl font-['Morganite'] font-semibold tracking-[2] uppercase text-white mr-12 h-[8.94%]">
+                    <div
+                        className="text-2xl font-['Morganite'] font-semibold tracking-[2] uppercase text-white mr-12 h-[8.94%]">
                         Navigation
                     </div>
                     <div className="text-sm font-sans leading-[30px] text-white ml-px h-[84.86%]">
                         Home
                         {"      "}
-                        <br />
+                        <br/>
                         Search
-                        <br />
+                        <br/>
                         Wishlist
-                        <br />
+                        <br/>
                         Cart
-                        <br />
+                        <br/>
                         Profile
-                        <br />
+                        <br/>
                         Help Centre
                     </div>
                 </div>
                 <div className="flex flex-col justify-start gap-3 items-start mt-3 mr-16">
-                    <div className="text-2xl font-['Morganite'] font-semibold tracking-[2] uppercase text-white w-12 h-[12.46%]">
+                    <div
+                        className="text-2xl font-['Morganite'] font-semibold tracking-[2] uppercase text-white w-12 h-[12.46%]">
                         LEGAL
                     </div>
                     <div className="text-sm font-sans leading-[30px] text-white self-stretch h-[79.17%]">
                         Payment Policy
-                        <br />
+                        <br/>
                         Terms of Service
-                        <br />
+                        <br/>
                         Affiliate Programs
-                        <br />
+                        <br/>
                         FAQ
                     </div>
                 </div>
@@ -270,7 +265,8 @@ const GiftCardSection: FunctionComponent = () => {
                         className="whitespace-nowrap text-xl font-['Montserrat'] font-medium tracking-[0.6] text-black mr-8 relative">
                         Rs. 1000
                     </div>
-                    <div className="border-solid border-[#608fa3] bg-[#608fa2] mr-3 relative w-6 shrink-0 h-6 border-2"/>
+                    <div
+                        className="border-solid border-[#608fa3] bg-[#608fa2] mr-3 relative w-6 shrink-0 h-6 border-2"/>
                     <div className="text-xl font-['Montserrat'] font-medium tracking-[0.6] text-black mr-8 relative">
                         Rs.2000
                     </div>
@@ -287,20 +283,17 @@ const GiftCardSection: FunctionComponent = () => {
                         Rs.5000
                     </div>
                     <div className="border-solid border-[#608fa3] bg-[#608fa2] relative w-6 shrink-0 h-6 border-2"/>
-                    <div className="text-xl font-['Montserrat'] font-medium tracking-[0.6] text-black self-start relative">
+                    <div
+                        className="text-xl font-['Montserrat'] font-medium tracking-[0.6] text-black self-start relative">
                         Rs.10000
                     </div>
                 </div>
                 <div className="text-4xl font-['Morganite'] font-bold tracking-[0.8] text-[#fefefe] ml-2 relative">
                     Quantity
                 </div>
-                <button
-                    className="bg-[#e9ecef] flex flex-col justify-start mb-6 relative h-10 shrink-0 items-end pr-0 py-2 rounded-[22.11474609375px]">
-                    <div
-                        className="text-xl font-['Open_Sans'] font-semibold leading-[31px] text-[#0b0b0b] ml-4 relative w-5/6 h-full">
-                        -{"   "}1{"  "}+
-                    </div>
-                </button>
+                <div className='my-4 ml-4 bg-red-900'>
+                    <QuantityInput/>
+                </div>
                 <div className="flex flex-row justify-start ml-px gap-6 relative items-center">
                     <button
                         className="bg-[#25262b] flex flex-col justify-center pl-12 relative w-[282px] shrink-0 h-16 items-start rounded-sm">
@@ -325,7 +318,7 @@ const GiftCardSection: FunctionComponent = () => {
 const ProductsSection: FunctionComponent = () => {
     const productsQuery = api.product.getAll.useQuery();
 
-    if(!productsQuery.isSuccess) return null
+    if (!productsQuery.isSuccess) return null
 
     return <Grid className='bg-[#272727] p-36'>
         <Grid.Col span={4}>
@@ -394,8 +387,6 @@ export default function Home() {
 const useStyles = createStyles((theme) => ({
     wrapper: {
         display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
         padding: `${rem(6)} ${theme.spacing.xs}`,
         borderRadius: theme.radius.sm,
         border: `${rem(1)} solid ${
@@ -423,9 +414,8 @@ const useStyles = createStyles((theme) => ({
 
     input: {
         textAlign: 'center',
-        paddingRight: `${theme.spacing.sm} !important`,
-        paddingLeft: `${theme.spacing.sm} !important`,
         height: rem(28),
+        width: rem(28),
         flex: 1,
     },
 }));
@@ -435,8 +425,8 @@ interface QuantityInputProps {
     max?: number;
 }
 
-export function QuantityInput({ min = 1, max = 10 }: QuantityInputProps) {
-    const { classes } = useStyles();
+export function QuantityInput({min = 1, max = 10}: QuantityInputProps) {
+    const {classes} = useStyles();
     const handlers = useRef<NumberInputHandlers>(null);
     const [value, setValue] = useState<number | ''>(1);
 
@@ -450,7 +440,7 @@ export function QuantityInput({ min = 1, max = 10 }: QuantityInputProps) {
                 className={classes.control}
                 onMouseDown={(event) => event.preventDefault()}
             >
-                <IconMinus size="1rem" stroke={1.5} />
+                <IconMinus size="1rem" stroke={1.5}/>
             </ActionIcon>
 
             <NumberInput
@@ -460,7 +450,7 @@ export function QuantityInput({ min = 1, max = 10 }: QuantityInputProps) {
                 handlersRef={handlers}
                 value={value}
                 onChange={setValue}
-                classNames={{ input: classes.input }}
+                classNames={{input: classes.input}}
             />
 
             <ActionIcon<'button'>
@@ -471,7 +461,7 @@ export function QuantityInput({ min = 1, max = 10 }: QuantityInputProps) {
                 className={classes.control}
                 onMouseDown={(event) => event.preventDefault()}
             >
-                <IconPlus size="1rem" stroke={1.5} />
+                <IconPlus size="1rem" stroke={1.5}/>
             </ActionIcon>
         </div>
     );
