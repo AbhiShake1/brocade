@@ -11,11 +11,45 @@ datasource db {
   relationMode = "prisma"
 }
 
-model Product {
-  id        String   @id @default(cuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  imageUrl  String
+model User {
+  id        String     @id @default(cuid())
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   name      String
-  price     Int
+  email     String     @unique
+  password  String
+  carts     Cart[]
+  giftCards GiftCard[]
+}
+
+model Product {
+  id          String @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  imageUrl    String
+  category    String
+  carts       Cart[]
+}
+
+model Cart {
+  id        String  @id @default(cuid())
+  quantity  Int
+  userId    String
+  productId String
+  user      User    @relation(fields: [userId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@index([userId, productId])
+  @@index([productId])
+}
+
+model GiftCard {
+  id     String @id @default(cuid())
+  code   String
+  amount Float
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
