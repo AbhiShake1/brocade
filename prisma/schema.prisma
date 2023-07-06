@@ -11,8 +11,11 @@ datasource db {
   relationMode = "prisma"
 }
 
-model Example {
+model Product {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  imageUrl  String
+  name      String
+  price     Int
 }
