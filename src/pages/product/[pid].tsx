@@ -229,7 +229,7 @@ const Index = () => {
                         {"  "}
                         <div className="text-sm font-['Montserrat'] font-bold tracking-[0.45] text-black contents">
                             {"                  "}
-                            — The model is 189cm/6'2" and wears a size L/L
+                            — The model is 189cm/6&apos;2&quot; and wears a size L/L
                             <br/>
                         </div>
                         <div className="text-sm font-['Montserrat'] font-bold tracking-[0.45] text-black contents">

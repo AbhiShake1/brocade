@@ -3,9 +3,7 @@ import Image from "next/image";
 import {IconHeart, IconShoppingCart} from "@tabler/icons-react";
 import {useRouter} from "next/router";
 
-interface Props {}
-
-const ProductItem: FunctionComponent<Props> = () => {
+const ProductItem: FunctionComponent = () => {
     const {push} = useRouter()
     return <button onClick={()=>void push(`product/1`)}>
         <div className="w-[269px] h-[331px] relative">
