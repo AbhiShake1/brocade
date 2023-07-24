@@ -7,6 +7,7 @@ import {SpotlightProvider} from "@mantine/spotlight";
 import {IconSearch} from "@tabler/icons-react";
 import {AppFooter} from "~/components/AppFooter";
 import {ModalsProvider} from "@mantine/modals";
+import {Toaster} from "react-hot-toast";
 
 const MyApp: AppType = ({Component, pageProps}) => {
     return <MantineProvider withGlobalStyles withNormalizeCSS theme={{loader: 'oval'}}>
@@ -19,6 +20,7 @@ const MyApp: AppType = ({Component, pageProps}) => {
                 nothingFoundMessage="Nothing found..."
             >
                 <Header/>
+                <Toaster position='bottom-center'/>
                 <Component {...pageProps} />
                 <Footer height='auto'>
                     <AppFooter/>

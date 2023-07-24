@@ -1,15 +1,28 @@
 import Head from "next/head";
 import {api} from "~/utils/api";
 import {Carousel} from "@mantine/carousel";
-import {Alert, Button, Checkbox, Grid, Image, Table, TextInput, Timeline} from "@mantine/core";
-import {IconArrowLeft, IconArrowRight} from "@tabler/icons-react";
+import {
+    ActionIcon,
+    Alert,
+    Checkbox,
+    createStyles,
+    Grid,
+    Image,
+    NumberInput,
+    type NumberInputHandlers,
+    rem,
+    Table,
+    TextInput,
+    Timeline
+} from "@mantine/core";
+import {IconArrowLeft, IconArrowRight, IconMinus, IconPlus} from "@tabler/icons-react";
 import ProductItem from "~/components/ProductItem";
 import type {FunctionComponent} from "react";
+import {useRef, useState} from 'react';
 import ShopByCategoryItem from "~/components/ShopByCategoryItem";
 import ShopTheLookItem from "~/components/ShopTheLookItem";
-import {useRef, useState} from 'react';
-import {createStyles, NumberInput, type NumberInputHandlers, ActionIcon, rem} from '@mantine/core';
-import {IconPlus, IconMinus} from '@tabler/icons-react';
+import toast from "react-hot-toast";
+import {useCartStore} from "~/stores/cart";
 
 const images: string[] = [
     'https://www.promostyl.com/wp-content/uploads/2019/06/fenty-brand-campaign-002-without-logo-url-glen-luchford-1558621091.jpg',
@@ -74,7 +87,16 @@ const SubscribeSection: FunctionComponent = () => {
 
 }
 
+const items = [
+    {id: 1, name: 'P1', description: 'desc', price: 500, imageUrl: 'https://file.rendit.io/n/ygFupjPO0qx44IeMKfN0.png', category: 'cloth'},
+    {id: 2, name: 'P1', description: 'desc', price: 2500, imageUrl: 'https://file.rendit.io/n/ygFupjPO0qx44IeMKfN0.png', category: 'cloth'},
+    {id: 3, name: 'P1', description: 'desc', price: 1000, imageUrl: 'https://file.rendit.io/n/ygFupjPO0qx44IeMKfN0.png', category: 'cloth'},
+    {id: 4, name: 'P1', description: 'desc', price: 10500, imageUrl: 'https://file.rendit.io/n/ygFupjPO0qx44IeMKfN0.png', category: 'cloth'},
+    {id: 5, name: 'P1', description: 'desc', price: 15000, imageUrl: 'https://file.rendit.io/n/ygFupjPO0qx44IeMKfN0.png', category: 'cloth'},
+]
+
 const GiftCardSection: FunctionComponent = () => {
+    const {addToCart, removeFromCart, cartItems} = useCartStore()
     return <div className='flex flex-col space-y-2 px-16 py-6'>
         <div className="text-4xl font-['Play'] w-full">
             Track order
@@ -130,30 +152,30 @@ const GiftCardSection: FunctionComponent = () => {
             </tr>
             </thead>
             <tbody>
-            <tr key='key'>
-                <td><Checkbox size='xl' color='dark' checked={true}/></td>
-                <td><img src="https://file.rendit.io/n/ygFupjPO0qx44IeMKfN0.png"/></td>
-                <td>
-                    <Alert variant='filled' radius='xl' color='dark' className='max-w-[108px]'>
-                        <h4 className='px-8'>XS</h4>
-                    </Alert>
-                </td>
-                <td>
-                    <div className="font-['Play'] font-bold text-2xl">
-                        Rs. 2500
-                    </div>
-                </td>
-                <td>
-                    <div className='w-28'>
-                        <QuantityInput/>
-                    </div>
-                </td>
-                <td>
-                    <div className="font-['Play'] font-bold text-2xl">
-                        Rs. 2500
-                    </div>
-                </td>
-            </tr>
+            {items.map(item=>(
+                <tr key={item.id}>
+                    <td><Checkbox size='xl' color='dark' checked={true}/></td>
+                    <td><img src={item.imageUrl}/></td>
+                    <td>
+                        <Alert variant='filled' radius='xl' color='dark' className='max-w-[108px]'>
+                            <h4 className='px-8'>XS</h4>
+                        </Alert>
+                    </td>
+                    <td>
+                        <div className="font-['Play'] font-bold text-2xl">{item.price}</div>
+                    </td>
+                    <td>
+                        <div className='w-28'>
+                            <QuantityInput/>
+                        </div>
+                    </td>
+                    <td>
+                        <div className="font-['Play'] font-bold text-2xl">
+                            Rs. 2500
+                        </div>
+                    </td>
+                </tr>
+            ))}
             </tbody>
         </Table>
         <div className="overflow-hidden bg-white flex flex-col justify-end pt-16 gap-1 w-full items-start">
@@ -349,9 +371,10 @@ const useStyles = createStyles((theme) => ({
 interface QuantityInputProps {
     min?: number;
     max?: number;
+    onChange?: (quantity: number) => void;
 }
 
-export function QuantityInput({min = 1, max = 10}: QuantityInputProps) {
+export function QuantityInput({min = 1, max, onChange}: QuantityInputProps) {
     const {classes} = useStyles();
     const handlers = useRef<NumberInputHandlers>(null);
     const [value, setValue] = useState<number | ''>(1);
@@ -375,7 +398,12 @@ export function QuantityInput({min = 1, max = 10}: QuantityInputProps) {
                 max={max}
                 handlersRef={handlers}
                 value={value}
-                onChange={setValue}
+                onChange={(val) => {
+                    if (val == '') return
+                    console.log(val)
+                    setValue(val)
+                    onChange?.call(undefined, val)
+                }}
                 classNames={{input: classes.input}}
             />
 
