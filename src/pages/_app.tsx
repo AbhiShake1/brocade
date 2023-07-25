@@ -8,6 +8,7 @@ import {IconSearch} from "@tabler/icons-react";
 import {AppFooter} from "~/components/AppFooter";
 import {ModalsProvider} from "@mantine/modals";
 import {Toaster} from "react-hot-toast";
+import {ClerkProvider} from "@clerk/nextjs";
 
 const MyApp: AppType = ({Component, pageProps}) => {
     return <MantineProvider withGlobalStyles withNormalizeCSS theme={{loader: 'oval'}}>
@@ -21,7 +22,9 @@ const MyApp: AppType = ({Component, pageProps}) => {
             >
                 <Header/>
                 <Toaster position='bottom-center'/>
-                <Component {...pageProps} />
+                <ClerkProvider {...pageProps}>
+                    <Component {...pageProps} />
+                </ClerkProvider>
                 <Footer height='auto'>
                     <AppFooter/>
                 </Footer>
