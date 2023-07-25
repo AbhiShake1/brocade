@@ -38,16 +38,6 @@ const Header: NextComponentType = () => {
                         alt='' height={36} width={36}/>
                 </NavItem>
                 <div className='scale-125 px-6'><UserButton/></div>
-                <NavItem href=''>
-                    <Image
-                        src='/headphone.svg'
-                        alt='' height={36} width={36}/>
-                </NavItem>
-                <NavItem>
-                    <Image className='ml-4'
-                           src='/menu.svg'
-                           alt='' height={36} width={36}/>
-                </NavItem>
             </div>
         </header>
     );
