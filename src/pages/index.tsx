@@ -15,10 +15,13 @@ import {
 import {IconArrowLeft, IconArrowRight, IconHeart, IconMinus, IconPlus, IconShoppingCart} from "@tabler/icons-react";
 import ProductItem from "~/components/ProductItem";
 import type {FunctionComponent} from "react";
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import ShopByCategoryItem from "~/components/ShopByCategoryItem";
 import ShopTheLookItem from "~/components/ShopTheLookItem";
 import toast from "react-hot-toast";
+import {modals} from "@mantine/modals";
+import AddItemModal from "~/components/modals/AddItemModal";
+import {Product} from "@prisma/client";
 
 const images: string[] = [
     'https://www.promostyl.com/wp-content/uploads/2019/06/fenty-brand-campaign-002-without-logo-url-glen-luchford-1558621091.jpg',
@@ -142,7 +145,8 @@ const GiftCardSection: FunctionComponent = () => {
                         Rs.10000
                     </div>
                 </div>
-                <div className="text-4xl font-['Morganite'] font-bold tracking-[0.8] text-[#fefefe] ml-2 relative">
+                <div className="text-4xl font-['Morganite'] fon
+                t-bold tracking-[0.8] text-[#fefefe] ml-2 relative">
                     Quantity
                 </div>
                 <div className='my-4 ml-4 bg-red-900'>
@@ -170,18 +174,31 @@ const GiftCardSection: FunctionComponent = () => {
 }
 
 const ProductsSection: FunctionComponent = () => {
-    const productsQuery = api.product.getAll.useQuery();
+    const [products, setProducts] = useState<Product[]>([])
+    const productsQuery = api.product.getAll.useQuery()
+
+    useEffect(() => {
+        if (!productsQuery.isSuccess) return
+        setProducts(productsQuery.data)
+    }, [productsQuery])
 
     if (!productsQuery.isSuccess) return null
 
     return <Grid className='bg-[#272727] p-36'>
-        {productsQuery.data.map(p => (
+        {products.map(p => (
             <Grid.Col span={4} key={p.id}>
                 <ProductItem {...p}/>
             </Grid.Col>
         ))}
         <Grid.Col span={4}>
-            <button>
+            <button onClick={() => modals.open({
+                title: 'Add new item',
+                centered: true,
+                children: <AddItemModal onPost={p => {
+                    modals.closeAll()
+                    setProducts(pr => [p, ...pr])
+                }}/>
+            })}>
                 <div className="w-[269px] h-[331px] relative">
                     <div
                         className="w-[269px] h-[331px] left-0 top-0 absolute bg-zinc-300 bg-opacity-30 rounded-3xl shadow backdrop-blur-[15px] flex flex-col items-center justify-center">
