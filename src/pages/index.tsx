@@ -12,13 +12,12 @@ import {
     TextInput,
     Timeline
 } from "@mantine/core";
-import {IconArrowLeft, IconArrowRight, IconHeart, IconMinus, IconPlus, IconShoppingCart} from "@tabler/icons-react";
+import {IconArrowLeft, IconArrowRight, IconMinus, IconPlus} from "@tabler/icons-react";
 import ProductItem from "~/components/ProductItem";
 import type {FunctionComponent} from "react";
 import React, {useEffect, useRef, useState} from 'react';
 import ShopByCategoryItem from "~/components/ShopByCategoryItem";
 import ShopTheLookItem from "~/components/ShopTheLookItem";
-import toast from "react-hot-toast";
 import {modals} from "@mantine/modals";
 import AddItemModal from "~/components/modals/AddItemModal";
 import {Product} from "@prisma/client";

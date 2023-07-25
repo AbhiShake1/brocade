@@ -1,12 +1,13 @@
 import {z} from "zod";
-import {createTRPCRouter, publicProcedure} from "~/server/api/trpc";
+import {createTRPCRouter, protectedProcedure} from "~/server/api/trpc";
 
 export const cartRouter = createTRPCRouter({
-    addToCart: publicProcedure
-        .input(z.object({productId: z.string().nonempty(), userId: z.string().nonempty()}))
+    addToCart: protectedProcedure
+        .input(z.object({productId: z.string().nonempty()}))
         .mutation(async ({ctx, input}) => {
-            const {userId, productId} = input
+            const {productId} = input
             const {prisma} = ctx
+            const userId = ctx.auth.userId
             let cart = await prisma.cart.findUnique({
                 where: {userId},
                 include: {products: true},
@@ -14,9 +15,7 @@ export const cartRouter = createTRPCRouter({
 
             if (!cart) {
                 cart = await prisma.cart.create({
-                    data: {
-                        userId,
-                    },
+                    data: {userId},
                     include: {products: true},
                 });
             }
@@ -30,11 +29,12 @@ export const cartRouter = createTRPCRouter({
                 });
             }
         }),
-    removeFromCart: publicProcedure
-        .input(z.object({productId: z.string().nonempty(), userId: z.string().nonempty()}))
+    removeFromCart: protectedProcedure
+        .input(z.object({productId: z.string().nonempty()}))
         .mutation(async ({ctx, input}) => {
-            const {userId, productId} = input
+            const {productId} = input
             const {prisma} = ctx
+            const userId = ctx.auth.userId
             const cart = await prisma.cart.findUnique({
                 where: {userId},
                 include: {products: true},

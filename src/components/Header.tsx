@@ -4,16 +4,20 @@ import Image from "next/image";
 import NavItem from "~/components/NavItem";
 import {modals} from "@mantine/modals";
 import FilterModal from "~/components/modals/FilterModal";
+import {useRouter} from "next/router";
 
 const Header: NextComponentType = () => {
+    const {push} = useRouter()
     return (
         <header className='w-full flex flex-row items-center justify-between px-4 pt-9 pb-8'>
-            <div className='flex flex-row space-x-4 items-center'>
-                <Image
-                    src='/logo.svg'
-                    alt='' height={48} width={48}/>
-                <h1 className='text-[36px] font-play text-black font-bold'>BROCADE OFFICIAL</h1>
-            </div>
+            <button onClick={() => void push('/')}>
+                <div className='flex flex-row space-x-4 items-center'>
+                    <Image
+                        src='/logo.svg'
+                        alt='' height={48} width={48}/>
+                    <h1 className='text-[36px] font-play text-black font-bold'>BROCADE OFFICIAL</h1>
+                </div>
+            </button>
             <div className='flex flex-row items-center space-x-2'>
                 <NavItem onClick={() => modals.open({
                     children: <FilterModal/>
