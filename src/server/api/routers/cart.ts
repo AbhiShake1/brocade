@@ -8,7 +8,7 @@ export const cartRouter = createTRPCRouter({
             where: {userId},
             update: {},
             create: {userId},
-            include: {products: true}
+            include: {productInCart: true}
         })
     }),
     addToCart: protectedProcedure
@@ -19,8 +19,12 @@ export const cartRouter = createTRPCRouter({
             return ctx.prisma.cart.update({
                 where: {userId},
                 data: {
-                    products: {
-                        connect: {id: productId}
+                    productInCart: {
+                        update: {
+                            where: {id: productId},
+                            data: {productId, quantity: {increment: 1}}
+                        },
+                        create: {productId, quantity: 1}
                     }
                 }
             })
@@ -31,20 +35,10 @@ export const cartRouter = createTRPCRouter({
             const {productId} = input
             const {prisma} = ctx
             const userId = ctx.auth.userId
-            const cart = await prisma.cart.findUnique({
-                where: {userId},
-                include: {products: true},
+
+            await ctx.prisma.productInCart.update({
+                where: {productId},
+                data: {quantity: {decrement: 1}}
             })
-
-            if (!cart) return
-
-            const productIndex = cart.products.findIndex(p => p.id == productId)
-
-            if (productIndex != -1) {
-                await prisma.product.update({
-                    where: {id: productId},
-                    data: {cartId: ''},
-                });
-            }
         }),
 });
