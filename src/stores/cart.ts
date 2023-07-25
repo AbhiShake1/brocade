@@ -16,8 +16,8 @@ interface CartStore {
 
 export const useCartStore = create<CartStore>((set, get) => ({
     initCart: (userId) => set(({cartItems: {userId, products: []}})),
-    cartItems: get().cartItems,
-    formattedCartItems: mergeDuplicateProducts(get().cartItems),
+    cartItems: get()?.cartItems,
+    formattedCartItems: mergeDuplicateProducts(get()?.cartItems),
     addToCart: (item) => set((state) => ({
         cartItems: {
             ...state.cartItems,
@@ -35,7 +35,7 @@ function mergeDuplicateProducts(cart: CartWithProduct): CartWithProductAndQuanti
     const productsMap: { [id: string]: ProductWithQuantity } = {};
 
     // Iterate through the products array to merge duplicates
-    for (const product of cart.products) {
+    for (const product of cart?.products ?? []) {
         if (productsMap[product.id]) {
             // If the product already exists in the map, increase the count
             productsMap[product.id]!.count++;
