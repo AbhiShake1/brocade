@@ -2,6 +2,14 @@ import {z} from "zod";
 import {createTRPCRouter, protectedProcedure} from "~/server/api/trpc";
 
 export const cartRouter = createTRPCRouter({
+    get: protectedProcedure.query(({ctx}) => {
+        const userId = ctx.auth.userId
+        return ctx.prisma.cart.update({
+            where: {userId},
+            data: {userId},
+            include: {products: true}
+        })
+    }),
     addToCart: protectedProcedure
         .input(z.object({productId: z.string().nonempty()}))
         .mutation(async ({ctx, input}) => {
