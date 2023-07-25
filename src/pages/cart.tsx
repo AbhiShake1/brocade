@@ -1,10 +1,14 @@
-import React from 'react';
+import React, {FunctionComponent, useState} from 'react';
 import {Alert, Checkbox, Table} from "@mantine/core";
 import {QuantityInput} from "~/pages/index";
 import {useCartStore} from "~/stores/cart";
+import {api} from "~/utils/api";
+import type {Product} from "@prisma/client";
 
 const Cart = () => {
-    const {addToCart, removeFromCart, cartItems} = useCartStore()
+    const {cartItems} = useCartStore()
+
+    if (!cartItems?.productInCart) return null
 
     return (
         <div className='py-8 px-16'>
@@ -50,28 +54,7 @@ const Cart = () => {
                 </thead>
                 <tbody>
                 {cartItems.productInCart.map(({product: item, quantity}) => (
-                    <tr key={item.id}>
-                        <td><Checkbox size='xl' color='dark' checked={true}/></td>
-                        <td><img src={item.imageUrl}/></td>
-                        <td>
-                            <Alert variant='filled' radius='xl' color='dark' className='max-w-[108px]'>
-                                <h4 className='px-8'>XS</h4>
-                            </Alert>
-                        </td>
-                        <td>
-                            <div className="font-['Play'] font-bold text-2xl">{item.price}</div>
-                        </td>
-                        <td>
-                            <div className='w-28'>
-                                <QuantityInput defaultValue={quantity}/>
-                            </div>
-                        </td>
-                        <td>
-                            <div className="font-['Play'] font-bold text-2xl">
-                                Rs.{item.price * quantity}
-                            </div>
-                        </td>
-                    </tr>
+                    <CartRow quantity={quantity} item={item} key={item.id}/>
                 ))}
                 </tbody>
             </Table>
@@ -89,7 +72,52 @@ const Cart = () => {
                 </div>
             </div>
         </div>
-    );
-};
+    )
+}
+
+interface CartRowProps {
+    item: Product
+    quantity: number
+}
+
+const CartRow: FunctionComponent<CartRowProps> = ({item, quantity}) => {
+    const {updateCart} = useCartStore()
+    const [quan, setQuan] = useState(quantity)
+
+    const updateCartMutation = api.cart.updateCart.useMutation({
+        onSuccess: item => {
+            if (item) {
+                setQuan(item.quantity)
+                updateCart(item, item.quantity)
+            }
+        }
+    })
+
+    return <tr key={item.id}>
+        <td><Checkbox size='xl' color='dark' checked={true}/></td>
+        <td><img src={item.imageUrl}/></td>
+        <td>
+            <Alert variant='filled' radius='xl' color='dark' className='max-w-[108px]'>
+                <h4 className='px-8'>XS</h4>
+            </Alert>
+        </td>
+        <td>
+            <div className="font-['Play'] font-bold text-2xl">{item.price}</div>
+        </td>
+        <td>
+            <div className='w-28'>
+                <QuantityInput defaultValue={quantity} onChange={quantity => updateCartMutation.mutate({
+                    quantity,
+                    productId: item.id
+                })}/>
+            </div>
+        </td>
+        <td>
+            <div className="font-['Play'] font-bold text-2xl">
+                Rs.{item.price * quan}
+            </div>
+        </td>
+    </tr>
+}
 
 export default Cart;

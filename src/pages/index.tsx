@@ -296,7 +296,7 @@ const useStyles = createStyles((theme) => ({
 interface QuantityInputProps {
     min?: number;
     max?: number;
-    defaultValue: number
+    defaultValue?: number
     onChange?: (quantity: number) => void;
 }
 
