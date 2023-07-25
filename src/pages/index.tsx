@@ -296,13 +296,14 @@ const useStyles = createStyles((theme) => ({
 interface QuantityInputProps {
     min?: number;
     max?: number;
+    defaultValue: number
     onChange?: (quantity: number) => void;
 }
 
-export function QuantityInput({min = 1, max, onChange}: QuantityInputProps) {
+export function QuantityInput({min = 1, max, defaultValue = 1, onChange}: QuantityInputProps) {
     const {classes} = useStyles();
     const handlers = useRef<NumberInputHandlers>(null);
-    const [value, setValue] = useState<number | ''>(1);
+    const [value, setValue] = useState<number | ''>(defaultValue);
 
     return (
         <div className={classes.wrapper}>

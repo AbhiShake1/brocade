@@ -3,49 +3,6 @@ import {Alert, Checkbox, Table} from "@mantine/core";
 import {QuantityInput} from "~/pages/index";
 import {useCartStore} from "~/stores/cart";
 
-const items = [
-    {
-        id: 1,
-        name: 'P1',
-        description: 'desc',
-        price: 500,
-        imageUrl: 'https://file.rendit.io/n/ygFupjPO0qx44IeMKfN0.png',
-        category: 'cloth'
-    },
-    {
-        id: 2,
-        name: 'P1',
-        description: 'desc',
-        price: 2500,
-        imageUrl: 'https://file.rendit.io/n/ygFupjPO0qx44IeMKfN0.png',
-        category: 'cloth'
-    },
-    {
-        id: 3,
-        name: 'P1',
-        description: 'desc',
-        price: 1000,
-        imageUrl: 'https://file.rendit.io/n/ygFupjPO0qx44IeMKfN0.png',
-        category: 'cloth'
-    },
-    {
-        id: 4,
-        name: 'P1',
-        description: 'desc',
-        price: 10500,
-        imageUrl: 'https://file.rendit.io/n/ygFupjPO0qx44IeMKfN0.png',
-        category: 'cloth'
-    },
-    {
-        id: 5,
-        name: 'P1',
-        description: 'desc',
-        price: 15000,
-        imageUrl: 'https://file.rendit.io/n/ygFupjPO0qx44IeMKfN0.png',
-        category: 'cloth'
-    },
-]
-
 const Cart = () => {
     const {addToCart, removeFromCart, cartItems} = useCartStore()
 
@@ -92,7 +49,7 @@ const Cart = () => {
                 </tr>
                 </thead>
                 <tbody>
-                {items.map(item => (
+                {cartItems.productInCart.map(({product: item, quantity}) => (
                     <tr key={item.id}>
                         <td><Checkbox size='xl' color='dark' checked={true}/></td>
                         <td><img src={item.imageUrl}/></td>
@@ -106,12 +63,12 @@ const Cart = () => {
                         </td>
                         <td>
                             <div className='w-28'>
-                                <QuantityInput/>
+                                <QuantityInput defaultValue={quantity}/>
                             </div>
                         </td>
                         <td>
                             <div className="font-['Play'] font-bold text-2xl">
-                                Rs. 2500
+                                Rs.{item.price * quantity}
                             </div>
                         </td>
                     </tr>

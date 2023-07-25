@@ -1,15 +1,13 @@
 import create from 'zustand';
-import type {Cart, Product} from "@prisma/client";
+import type {Cart, Product, ProductInCart} from "@prisma/client";
 
-type CartWithProduct = Omit<Cart & { products: Product[] }, 'id'>
-type ProductWithQuantity = Product & { count: number }
-type CartWithProductAndQuantity = Omit<Cart & { products: ProductWithQuantity[] }, 'id'>
+type Prod = ProductInCart & { product: Product }
+type CartWithProduct = Omit<Cart & { productInCart: Prod[] }, 'id'>
 
 interface CartStore {
     initCart: (cart: CartWithProduct) => void
     cartItems: CartWithProduct;
-    formattedCartItems: CartWithProductAndQuantity
-    addToCart: (item: Product) => void;
+    addToCart: (item: ProductInCart) => void;
     removeFromCart: (itemId: string) => void;
     clearCart: () => void;
 }
@@ -17,37 +15,21 @@ interface CartStore {
 export const useCartStore = create<CartStore>((set, get) => ({
     initCart: (cartItems) => set({cartItems}),
     cartItems: get()?.cartItems,
-    formattedCartItems: mergeDuplicateProducts(get()?.cartItems),
     addToCart: (item) => set((state) => ({
         cartItems: {
             ...state.cartItems,
-            products: [item, ...state.cartItems.products]
+            productInCart: state.cartItems.productInCart.map(p => p.productId == item.id ? {
+                ...p,
+                quantity: p.quantity + 1
+            } : p)
         }
     })),
     removeFromCart: (itemId) =>
         set((state) => ({
-            cartItems: {...state.cartItems, products: state.cartItems.products.filter(p => p.id != itemId)},
+            cartItems: {
+                ...state.cartItems,
+                productInCart: state.cartItems.productInCart.filter(p => p.productId != itemId)
+            },
         })),
     clearCart: () => set((state) => ({cartItems: {...state.cartItems, products: []}})),
-}));
-
-function mergeDuplicateProducts(cart: CartWithProduct): CartWithProductAndQuantity {
-    const productsMap: { [id: string]: ProductWithQuantity } = {};
-
-    // Iterate through the products array to merge duplicates
-    for (const product of cart?.products ?? []) {
-        if (productsMap[product.id]) {
-            // If the product already exists in the map, increase the count
-            productsMap[product.id]!.count++;
-        } else {
-            // If the product does not exist, add it to the productsMap with count 1
-            productsMap[product.id] = {...product, count: 1};
-        }
-    }
-
-    // Convert the productsMap back to an array without duplicates
-    const mergedProducts = Object.values(productsMap);
-
-    // Return the modified cart with merged products
-    return {...cart, products: mergedProducts};
-}
+}))

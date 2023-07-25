@@ -7,7 +7,7 @@ import {SpotlightProvider} from "@mantine/spotlight";
 import {IconSearch} from "@tabler/icons-react";
 import {AppFooter} from "~/components/AppFooter";
 import {ModalsProvider} from "@mantine/modals";
-import {Toaster} from "react-hot-toast";
+import {toast, Toaster} from "react-hot-toast";
 import {ClerkProvider} from "@clerk/nextjs";
 import {useEffect} from "react";
 import {useCartStore} from "~/stores/cart";
