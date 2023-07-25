@@ -12,12 +12,13 @@ import {
     TextInput,
     Timeline
 } from "@mantine/core";
-import {IconArrowLeft, IconArrowRight, IconMinus, IconPlus} from "@tabler/icons-react";
+import {IconArrowLeft, IconArrowRight, IconHeart, IconMinus, IconPlus, IconShoppingCart} from "@tabler/icons-react";
 import ProductItem from "~/components/ProductItem";
 import type {FunctionComponent} from "react";
 import React, {useRef, useState} from 'react';
 import ShopByCategoryItem from "~/components/ShopByCategoryItem";
 import ShopTheLookItem from "~/components/ShopTheLookItem";
+import toast from "react-hot-toast";
 
 const images: string[] = [
     'https://www.promostyl.com/wp-content/uploads/2019/06/fenty-brand-campaign-002-without-logo-url-glen-luchford-1558621091.jpg',
@@ -174,17 +175,20 @@ const ProductsSection: FunctionComponent = () => {
     if (!productsQuery.isSuccess) return null
 
     return <Grid className='bg-[#272727] p-36'>
+        {productsQuery.data.map(p => (
+            <Grid.Col span={4} key={p.id}>
+                <ProductItem {...p}/>
+            </Grid.Col>
+        ))}
         <Grid.Col span={4}>
-            <ProductItem/>
-        </Grid.Col>
-        <Grid.Col span={4}>
-            <ProductItem/>
-        </Grid.Col>
-        <Grid.Col span={4}>
-            <ProductItem/>
-        </Grid.Col>
-        <Grid.Col span={4}>
-            <ProductItem/>
+            <button>
+                <div className="w-[269px] h-[331px] relative">
+                    <div
+                        className="w-[269px] h-[331px] left-0 top-0 absolute bg-zinc-300 bg-opacity-30 rounded-3xl shadow backdrop-blur-[15px] flex flex-col items-center justify-center">
+                        <h1 className='font-medium text-6xl scale-[4]'>+</h1>
+                    </div>
+                </div>
+            </button>
         </Grid.Col>
     </Grid>;
 }

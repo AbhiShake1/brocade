@@ -29,19 +29,19 @@ model Product {
   price       Float
   imageUrl    String
   category    String
-  carts       Cart[]
+  cartId      String
+  cart        Cart   @relation(fields: [cartId], references: [id])
+
+  @@index([cartId])
 }
 
 model Cart {
-  id        String  @id @default(cuid())
-  quantity  Int
-  userId    String
-  productId String
-  user      User    @relation(fields: [userId], references: [id])
-  product   Product @relation(fields: [productId], references: [id])
+  id       String    @id @default(cuid())
+  userId   String    @unique
+  user     User      @relation(fields: [userId], references: [id])
+  products Product[]
 
-  @@index([userId, productId])
-  @@index([productId])
+  @@index([userId])
 }
 
 model GiftCard {
