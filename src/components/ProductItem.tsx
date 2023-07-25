@@ -3,6 +3,8 @@ import Image from "next/image";
 import {IconHeart, IconShoppingCart} from "@tabler/icons-react";
 import {useRouter} from "next/router";
 import {useCartStore} from "~/stores/cart";
+import {api} from "~/utils/api";
+import {toast} from "react-hot-toast";
 
 interface Props {
     id: string
@@ -14,6 +16,20 @@ interface Props {
 const ProductItem: FunctionComponent<Props> = ({id, imageUrl, name, price}) => {
     const {push} = useRouter()
     const {addToCart} = useCartStore()
+    const addToCartMutation = api.cart.addToCart.useMutation({
+        onError: err => {
+            toast.remove()
+            toast.error(err.message)
+        },
+        onSuccess: data => {
+            toast.remove()
+            if (!data) return
+            toast.success('Added to cart')
+            addToCart(data)
+        },
+        onMutate: () => toast.loading('Adding to cart...')
+    })
+
     return <div className="w-[269px] h-[331px] relative">
         <div
             className="w-[269px] h-[331px] left-0 top-0 absolute bg-zinc-300 bg-opacity-30 rounded-3xl shadow backdrop-blur-[15px]"></div>
@@ -22,10 +38,12 @@ const ProductItem: FunctionComponent<Props> = ({id, imageUrl, name, price}) => {
                    className="w-[230px] h-[236px] left-[20px] top-[19px] absolute rounded-3xl object-cover"
                    src={imageUrl}/>
         </button>
-        <div className="w-9 h-9 left-[214px] top-[272px] absolute bg-slate-700 rounded-full text-white">
-            <IconShoppingCart/>
-        </div>
-        <button onClick={()=>{}}>
+        <button onClick={() => addToCartMutation.mutate({productId: id})}>
+            <div className="w-9 h-9 left-[214px] top-[272px] absolute bg-slate-700 rounded-full text-white">
+                <IconShoppingCart/>
+            </div>
+        </button>
+        <button>
             <div className="w-9 h-9 left-[171px] top-[272px] absolute bg-slate-700 rounded-full text-white">
                 <IconHeart/>
             </div>

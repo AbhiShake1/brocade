@@ -4,9 +4,10 @@ import {createTRPCRouter, protectedProcedure} from "~/server/api/trpc";
 export const cartRouter = createTRPCRouter({
     get: protectedProcedure.query(({ctx}) => {
         const userId = ctx.auth.userId
-        return ctx.prisma.cart.update({
+        return ctx.prisma.cart.upsert({
             where: {userId},
-            data: {userId},
+            update: {},
+            create: {userId},
             include: {products: true}
         })
     }),
@@ -30,8 +31,8 @@ export const cartRouter = createTRPCRouter({
 
             const productIndex = cart.products.findIndex(p => p.id == productId);
 
-            if (productIndex === -1) {
-                await prisma.product.update({
+            if (productIndex == -1) {
+                return await prisma.product.update({
                     where: {id: productId},
                     data: {cartId: cart.id},
                 });

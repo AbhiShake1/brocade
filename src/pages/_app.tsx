@@ -9,8 +9,23 @@ import {AppFooter} from "~/components/AppFooter";
 import {ModalsProvider} from "@mantine/modals";
 import {Toaster} from "react-hot-toast";
 import {ClerkProvider} from "@clerk/nextjs";
+import {useEffect} from "react";
+import {useCartStore} from "~/stores/cart";
+
+let isSet = false
 
 const MyApp: AppType = ({Component, pageProps}) => {
+    const cart = api.cart.get.useQuery()
+    const {initCart} = useCartStore()
+
+    useEffect(() => {
+        if (isSet) return
+        if (cart.isSuccess) {
+            initCart(cart.data)
+            isSet = true
+        }
+    }, [cart])
+
     return <MantineProvider withGlobalStyles withNormalizeCSS theme={{loader: 'oval'}}>
         <ModalsProvider>
             <SpotlightProvider

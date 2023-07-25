@@ -6,7 +6,7 @@ type ProductWithQuantity = Product & { count: number }
 type CartWithProductAndQuantity = Omit<Cart & { products: ProductWithQuantity[] }, 'id'>
 
 interface CartStore {
-    initCart: (userId: string) => void
+    initCart: (cart: CartWithProduct) => void
     cartItems: CartWithProduct;
     formattedCartItems: CartWithProductAndQuantity
     addToCart: (item: Product) => void;
@@ -15,7 +15,7 @@ interface CartStore {
 }
 
 export const useCartStore = create<CartStore>((set, get) => ({
-    initCart: (userId) => set(({cartItems: {userId, products: []}})),
+    initCart: (cartItems) => set({cartItems}),
     cartItems: get()?.cartItems,
     formattedCartItems: mergeDuplicateProducts(get()?.cartItems),
     addToCart: (item) => set((state) => ({
