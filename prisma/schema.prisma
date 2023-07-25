@@ -12,22 +12,31 @@ datasource db {
 }
 
 model Product {
-  id          String @id @default(cuid())
-  name        String
-  description String
-  price       Float
-  imageUrl    String
-  category    String
-  cartId      String
-  cart        Cart   @relation(fields: [cartId], references: [id])
+  id            String          @id @default(cuid())
+  name          String
+  description   String
+  price         Float
+  imageUrl      String
+  category      String
+  productInCart ProductInCart[]
+}
 
+model ProductInCart {
+  id        String  @id @default(cuid())
+  product   Product @relation(fields: [productId], references: [id])
+  productId String
+  cart      Cart    @relation(fields: [cartId], references: [id])
+  cartId    String
+  quantity  Int     @default(1)
+
+  @@index([productId, cartId])
   @@index([cartId])
 }
 
 model Cart {
-  id       String    @id @default(cuid())
-  userId   String    @unique
-  products Product[]
+  id            String          @id @default(cuid())
+  userId        String          @unique
+  productInCart ProductInCart[]
 
   @@index([userId])
 }

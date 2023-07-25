@@ -16,10 +16,13 @@ export const cartRouter = createTRPCRouter({
         .mutation(async ({ctx, input}) => {
             const {productId} = input
             const userId = ctx.auth.userId
-            const cart = await ctx.prisma.cart.findUnique({where: {userId}})
-            return ctx.prisma.product.update({
-                where: {id: productId},
-                data: {cartId: cart!.id},
+            return ctx.prisma.cart.update({
+                where: {userId},
+                data: {
+                    products: {
+                        connect: {id: productId}
+                    }
+                }
             })
         }),
     removeFromCart: protectedProcedure
