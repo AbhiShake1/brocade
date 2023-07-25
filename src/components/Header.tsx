@@ -5,6 +5,7 @@ import NavItem from "~/components/NavItem";
 import {modals} from "@mantine/modals";
 import FilterModal from "~/components/modals/FilterModal";
 import {useRouter} from "next/router";
+import {UserButton} from "@clerk/nextjs";
 
 const Header: NextComponentType = () => {
     const {push} = useRouter()
@@ -36,11 +37,7 @@ const Header: NextComponentType = () => {
                         src='/cart.svg'
                         alt='' height={36} width={36}/>
                 </NavItem>
-                <NavItem href='/profile'>
-                    <Image
-                        src='/profile.svg'
-                        alt='' height={36} width={36}/>
-                </NavItem>
+                <div className='scale-125 px-6'><UserButton/></div>
                 <NavItem href=''>
                     <Image
                         src='/headphone.svg'

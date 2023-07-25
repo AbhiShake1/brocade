@@ -7,7 +7,7 @@ import {SpotlightProvider} from "@mantine/spotlight";
 import {IconSearch} from "@tabler/icons-react";
 import {AppFooter} from "~/components/AppFooter";
 import {ModalsProvider} from "@mantine/modals";
-import {toast, Toaster} from "react-hot-toast";
+import {Toaster} from "react-hot-toast";
 import {ClerkProvider} from "@clerk/nextjs";
 import {useEffect} from "react";
 import {useCartStore} from "~/stores/cart";
@@ -28,22 +28,23 @@ const MyApp: AppType = ({Component, pageProps}) => {
 
     return <MantineProvider withGlobalStyles withNormalizeCSS theme={{loader: 'oval'}}>
         <ModalsProvider>
-            <SpotlightProvider
-                actions={[]}
-                searchIcon={<IconSearch size="1.2rem"/>}
-                searchPlaceholder="Search..."
-                shortcut="mod + shift + 1"
-                nothingFoundMessage="Nothing found..."
-            >
-                <Header/>
-                <Toaster position='bottom-center'/>
-                <ClerkProvider {...pageProps}>
+            <ClerkProvider {...pageProps}>
+                <SpotlightProvider
+                    actions={[]}
+                    searchIcon={<IconSearch size="1.2rem"/>}
+                    searchPlaceholder="Search..."
+                    shortcut="mod + shift + 1"
+                    nothingFoundMessage="Nothing found..."
+                >
+                    <Header/>
+                    <Toaster position='bottom-center'/>
+
                     <Component {...pageProps} />
-                </ClerkProvider>
-                <Footer height='auto'>
-                    <AppFooter/>
-                </Footer>
-            </SpotlightProvider>
+                    <Footer height='auto'>
+                        <AppFooter/>
+                    </Footer>
+                </SpotlightProvider>
+            </ClerkProvider>
         </ModalsProvider>
     </MantineProvider>;
 };
