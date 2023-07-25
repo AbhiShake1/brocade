@@ -15,28 +15,12 @@ export const cartRouter = createTRPCRouter({
         .input(z.object({productId: z.string().nonempty()}))
         .mutation(async ({ctx, input}) => {
             const {productId} = input
-            const {prisma} = ctx
             const userId = ctx.auth.userId
-            let cart = await prisma.cart.findUnique({
-                where: {userId},
-                include: {products: true},
+            const cart = await ctx.prisma.cart.findUnique({where: {userId}})
+            return ctx.prisma.product.update({
+                where: {id: productId},
+                data: {cartId: cart!.id},
             })
-
-            if (!cart) {
-                cart = await prisma.cart.create({
-                    data: {userId},
-                    include: {products: true},
-                });
-            }
-
-            const productIndex = cart.products.findIndex(p => p.id == productId);
-
-            if (productIndex == -1) {
-                return await prisma.product.update({
-                    where: {id: productId},
-                    data: {cartId: cart.id},
-                });
-            }
         }),
     removeFromCart: protectedProcedure
         .input(z.object({productId: z.string().nonempty()}))
