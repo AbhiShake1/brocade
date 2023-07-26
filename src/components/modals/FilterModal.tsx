@@ -1,4 +1,5 @@
 import React from 'react';
+import {Group, Radio} from "@mantine/core";
 
 const FilterModal = () => {
     return (
@@ -10,24 +11,13 @@ const FilterModal = () => {
             <div className="whitespace-nowrap text-xl font-['Montserrat'] font-semibold tracking-[0.66] text-black relative mb-2 ml-1">
                 SORT BY
             </div>
-            <div className="flex flex-row justify-start gap-3 relative items-center mb-px ml-1">
-                <div className="border-solid border-[#608fa3] bg-[#608fa2] relative w-6 shrink-0 h-6 border-2" />
-                <div className="text-lg font-['Montserrat'] font-medium tracking-[0.54] text-black relative w-4/5 h-[77.78%]">
-                    Latest Arrivals
-                </div>
-            </div>
-            <div className="flex flex-row justify-start gap-3 relative items-center mb-px ml-1">
-                <div className="border-solid border-[#608fa3] bg-[#608fa2] relative w-6 shrink-0 h-6 border-2" />
-                <div className="whitespace-nowrap text-lg font-['Montserrat'] font-medium tracking-[0.54] text-black relative">
-                    Lowest Price{" "}
-                </div>
-            </div>
-            <div className="flex flex-row justify-start gap-3 relative items-center mb-3 ml-1">
-                <div className="border-solid border-[#608fa3] bg-[#608fa2] relative w-6 shrink-0 h-6 border-2" />
-                <div className="whitespace-nowrap text-lg font-['Montserrat'] font-medium tracking-[0.54] text-black relative">
-                    Highest Price
-                </div>
-            </div>
+            <Radio.Group className='pb-8'>
+                <Group mt="xs">
+                    <Radio value="react" label="Latest Arrivals" />
+                    <Radio value="svelte" label="Lowest Price" />
+                    <Radio value="ng" label="Highest Price" />
+                </Group>
+            </Radio.Group>
             <div className="text-xl font-['Montserrat'] font-semibold tracking-[0.66] text-black relative mb-2 ml-1">
                 SIZE
             </div>

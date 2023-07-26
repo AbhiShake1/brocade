@@ -8,18 +8,18 @@ export const productRouter = createTRPCRouter({
             include: {
                 favouriteProducts: {
                     where: {
-                        userId: ctx.auth.userId!,
+                        userId: ctx.auth.userId ?? undefined,
                     },
                     select: {
                         productId: true,
                     },
                 },
             },
-        });
+        })
 
         return products.map((product) => ({
             ...product,
-            isFavourite: product.favouriteProducts.some((favProduct) => favProduct.productId === product.id),
+            isFavourite: ctx.auth.userId == null ? false : product.favouriteProducts.some((favProduct) => favProduct.productId === product.id),
         }))
     }),
     toggleFavourite: protectedProcedure

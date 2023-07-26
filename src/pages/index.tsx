@@ -21,6 +21,7 @@ import ShopTheLookItem from "~/components/ShopTheLookItem";
 import {modals} from "@mantine/modals";
 import AddItemModal from "~/components/modals/AddItemModal";
 import {Product} from "@prisma/client";
+import {toast} from "react-hot-toast";
 
 const images: string[] = [
     'https://www.promostyl.com/wp-content/uploads/2019/06/fenty-brand-campaign-002-without-logo-url-glen-luchford-1558621091.jpg',
