@@ -8,7 +8,7 @@ export const productRouter = createTRPCRouter({
             include: {
                 favouriteProducts: {
                     where: {
-                        userId: ctx.auth.userId,
+                        userId: ctx.auth.userId!,
                     },
                     select: {
                         productId: true,
