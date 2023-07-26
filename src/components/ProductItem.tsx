@@ -1,6 +1,6 @@
-import React, {type FunctionComponent} from 'react';
+import React, {type FunctionComponent, useState} from 'react';
 import Image from "next/image";
-import {IconHeart, IconShoppingCart} from "@tabler/icons-react";
+import {IconHeart, IconHeartFilled, IconShoppingCart} from "@tabler/icons-react";
 import {useRouter} from "next/router";
 import {useCartStore} from "~/stores/cart";
 import {api} from "~/utils/api";
@@ -11,11 +11,14 @@ interface Props {
     imageUrl: string
     name: string
     price: number
+    isFavourite: boolean
 }
 
-const ProductItem: FunctionComponent<Props> = ({id, imageUrl, name, price}) => {
+const ProductItem: FunctionComponent<Props> = ({id, imageUrl, name, price, isFavourite}) => {
     const {push} = useRouter()
     const {addToCart} = useCartStore()
+    const [isFav, setIsFav] = useState(isFavourite)
+
     const addToCartMutation = api.cart.addToCart.useMutation({
         onError: err => {
             toast.remove()
@@ -28,6 +31,11 @@ const ProductItem: FunctionComponent<Props> = ({id, imageUrl, name, price}) => {
             addToCart(data)
         },
         onMutate: () => toast.loading('Adding to cart...')
+    })
+
+    const markFavouriteMutation = api.product.toggleFavourite.useMutation({
+        onSuccess: setIsFav,
+        onError: err => toast.error(err.message),
     })
 
     return <div className="w-[269px] h-[331px] relative">
@@ -43,9 +51,9 @@ const ProductItem: FunctionComponent<Props> = ({id, imageUrl, name, price}) => {
                 <IconShoppingCart/>
             </div>
         </button>
-        <button>
+        <button onClick={() => markFavouriteMutation.mutate({productId: id})}>
             <div className="w-9 h-9 left-[171px] top-[272px] absolute bg-slate-700 rounded-full text-white">
-                <IconHeart/>
+                {isFav ? <IconHeartFilled className='text-red-600'/> : <IconHeart/>}
             </div>
         </button>
         <div className="right-[156px] top-[272px] absolute text-white text-[20px] font-normal">

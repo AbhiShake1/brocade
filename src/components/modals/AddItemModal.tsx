@@ -6,7 +6,7 @@ import FileInput from "~/components/FileInput";
 import type {Product} from "@prisma/client";
 
 interface Props {
-    onPost: (item: Product) => void
+    onPost: (item: Product & { isFavourite: boolean }) => void
 }
 
 const AddItemModal: React.FC<Props> = ({onPost}) => {
@@ -32,7 +32,6 @@ const AddItemModal: React.FC<Props> = ({onPost}) => {
                 price,
                 name,
                 category: '',
-                cartId: '',
             }
         })
     }

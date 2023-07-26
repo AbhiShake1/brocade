@@ -173,7 +173,7 @@ const GiftCardSection: FunctionComponent = () => {
 }
 
 const ProductsSection: FunctionComponent = () => {
-    const [products, setProducts] = useState<Product[]>([])
+    const [products, setProducts] = useState<(Product & { isFavourite: boolean })[]>([])
     const productsQuery = api.product.getAll.useQuery()
 
     useEffect(() => {
@@ -206,7 +206,7 @@ const ProductsSection: FunctionComponent = () => {
                 </div>
             </button>
         </Grid.Col>
-    </Grid>;
+    </Grid>
 }
 
 export default function Home() {

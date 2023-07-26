@@ -23,11 +23,12 @@ model Product {
 }
 
 model ProductFavourites {
-  id        String   @id @default(cuid())
-  userId    String   @unique
-  Product   Product? @relation(fields: [productId], references: [id])
-  productId String?
+  id        String  @id @default(cuid())
+  userId    String
+  Product   Product @relation(fields: [productId], references: [id])
+  productId String
 
+  @@unique([userId, productId])
   @@index([productId])
 }
 
