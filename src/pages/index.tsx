@@ -1,16 +1,7 @@
 import Head from "next/head";
 import {api} from "~/utils/api";
 import {Carousel} from "@mantine/carousel";
-import {
-    ActionIcon,
-    createStyles,
-    Grid,
-    Image,
-    NumberInput,
-    type NumberInputHandlers,
-    rem,
-    TextInput
-} from "@mantine/core";
+import {ActionIcon, createStyles, Grid, Image, NumberInput, type NumberInputHandlers, rem} from "@mantine/core";
 import {IconArrowLeft, IconArrowRight, IconMinus, IconPlus} from "@tabler/icons-react";
 import ProductItem from "~/components/ProductItem";
 import type {FunctionComponent} from "react";
@@ -28,15 +19,13 @@ const images: string[] = [
 ];
 
 const ShopByCategorySection: FunctionComponent = () => {
+    const query = api.product.getCategories.useQuery()
+
+    if (!query.isSuccess) return null
+
     return <Grid className='px-36'>
         <Grid.Col span={4}>
-            <ShopByCategoryItem/>
-        </Grid.Col>
-        <Grid.Col span={4}>
-            <ShopByCategoryItem/>
-        </Grid.Col>
-        <Grid.Col span={4}>
-            <ShopByCategoryItem/>
+            {query.data.map(p => <ShopByCategoryItem category={p.category} imageUrl={p.imageUrl} key={p.id}/>)}
         </Grid.Col>
     </Grid>
 }

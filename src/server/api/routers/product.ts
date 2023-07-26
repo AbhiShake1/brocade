@@ -1,5 +1,5 @@
 import {z} from "zod";
-import {type Prisma} from '@prisma/client'
+import {type Prisma, Product} from '@prisma/client'
 import {createTRPCRouter, protectedProcedure, publicProcedure} from "~/server/api/trpc";
 
 export const productRouter = createTRPCRouter({
@@ -114,5 +114,19 @@ export const productRouter = createTRPCRouter({
     create: publicProcedure.input(z.custom<Prisma.ProductCreateArgs>()).mutation(async ({ctx, input}) => {
         const product = await ctx.prisma.product.create(input)
         return {...product, isFavourite: false}
-    })
+    }),
+    getCategories: publicProcedure.query(async ({ctx}) => {
+        const categories = await ctx.prisma.product.groupBy({
+            by: ['category'],
+            having: {
+                category: {not: ''},
+            },
+        })
+        const products: Product[] = []
+        for (const category of categories) {
+            const product = await ctx.prisma.product.findFirst({where: {category: category.category}})
+            products.push(product!)
+        }
+        return products
+    }),
 });

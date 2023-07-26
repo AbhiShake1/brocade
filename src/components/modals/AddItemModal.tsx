@@ -13,6 +13,7 @@ const AddItemModal: React.FC<Props> = ({onPost}) => {
     const [urls, setUrls] = useState<string[]>([])
     const [name, setName] = useState('')
     const [description, setDescription] = useState<string | undefined>()
+    const [category, setCategory] = useState<string>('')
     const [price, setPrice] = useState(0)
 
     const createProductMutation = api.product.create.useMutation({
@@ -31,7 +32,7 @@ const AddItemModal: React.FC<Props> = ({onPost}) => {
                 description,
                 price,
                 name,
-                category: '',
+                category,
             }
         })
     }
@@ -53,6 +54,9 @@ const AddItemModal: React.FC<Props> = ({onPost}) => {
                     </Input.Wrapper>
                     <Input.Wrapper label='Price'>
                         <Input placeholder='Price' type='number' onChange={e => setPrice(parseInt(e.target.value))}/>
+                    </Input.Wrapper>
+                    <Input.Wrapper label='Category'>
+                        <Input placeholder='Category' onChange={e => setCategory(e.target.value)}/>
                     </Input.Wrapper>
                     <div className='pb-8'>
                         <FileInput onUploadComplete={res => setUrls(res?.map(r => r.fileUrl) ?? [])}/>

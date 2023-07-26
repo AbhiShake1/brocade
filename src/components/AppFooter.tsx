@@ -134,15 +134,21 @@ function FooterLinks({data}: FooterLinksProps) {
                 <div>
                     <Text className={classes.title}>FOLLOW US</Text>
                     <div className='flex flex-row'>
-                        <ActionIcon size="lg">
-                            <IconBrandFacebook size="1.5rem" stroke={1.5}/>
-                        </ActionIcon>
-                        <ActionIcon size="lg">
-                            <IconBrandInstagram size="1.5rem" stroke={1.5}/>
-                        </ActionIcon>
-                        <ActionIcon size="lg">
-                            <IconBrandTwitter size="1.5rem" stroke={1.5}/>
-                        </ActionIcon>
+                        <a href='https://www.facebook.com/brocadeofficial/' target='_blank'>
+                            <ActionIcon size="lg">
+                                <IconBrandFacebook size="1.5rem" stroke={1.5}/>
+                            </ActionIcon>
+                        </a>
+                        <a href='https://www.instagram.com/brocadeofficial/' target='_blank'>
+                            <ActionIcon size="lg">
+                                <IconBrandInstagram size="1.5rem" stroke={1.5}/>
+                            </ActionIcon>
+                        </a>
+                        <a href='https://twitter.com/i/flow/login?redirect_after_login=%2FBrocade' target='_blank'>
+                            <ActionIcon size="lg">
+                                <IconBrandTwitter size="1.5rem" stroke={1.5}/>
+                            </ActionIcon>
+                        </a>
                     </div>
                 </div>
             </Container>
