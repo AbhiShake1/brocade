@@ -77,9 +77,13 @@ export const productRouter = createTRPCRouter({
                     in: favoriteProductIds,
                 },
             },
+            include: {favouriteProducts: true},
         });
 
-        return products;
+        return products.map((product) => ({
+            ...product,
+            isFavourite: product.favouriteProducts.some((favProduct) => favProduct.productId === product.id),
+        }))
     }),
     create: publicProcedure.input(z.custom<Prisma.ProductCreateArgs>()).mutation(async ({ctx, input}) => {
         const product = await ctx.prisma.product.create(input)
