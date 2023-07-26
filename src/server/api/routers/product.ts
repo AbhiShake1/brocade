@@ -3,9 +3,9 @@ import {type Prisma} from '@prisma/client'
 import {createTRPCRouter, protectedProcedure, publicProcedure} from "~/server/api/trpc";
 
 export const productRouter = createTRPCRouter({
-    getAll: publicProcedure.query(async ({ctx}) => {
-        const products = await ctx.prisma.product.findMany({
-            include: {
+    getAll: publicProcedure
+        .query(async ({ctx}) => {
+            const include = {
                 favouriteProducts: {
                     where: {
                         userId: ctx.auth.userId ?? undefined,
@@ -14,14 +14,41 @@ export const productRouter = createTRPCRouter({
                         productId: true,
                     },
                 },
-            },
-        })
+            }
 
-        return products.map((product) => ({
-            ...product,
-            isFavourite: ctx.auth.userId == null ? false : product.favouriteProducts.some((favProduct) => favProduct.productId === product.id),
-        }))
-    }),
+            const products = await ctx.prisma.product.findMany({include})
+
+            return products.map((product) => ({
+                ...product,
+                isFavourite: ctx.auth.userId == null ? false : product.favouriteProducts.some((favProduct) => favProduct.productId === product.id),
+            }))
+        }),
+    getBySearch: publicProcedure
+        .input(z.string())
+        .mutation(async ({ctx, input}) => {
+            const products = await ctx.prisma.product.findMany({
+                include: {
+                    favouriteProducts: {
+                        where: {
+                            userId: ctx.auth.userId ?? undefined,
+                        },
+                        select: {
+                            productId: true,
+                        },
+                    },
+                },
+                where: {
+                    name: {
+                        contains: input.length == 0 ? undefined : input,
+                    }
+                }
+            })
+
+            return products.map((product) => ({
+                ...product,
+                isFavourite: ctx.auth.userId == null ? false : product.favouriteProducts.some((favProduct) => favProduct.productId === product.id),
+            }))
+        }),
     toggleFavourite: protectedProcedure
         .input(z.object({productId: z.string().nonempty()}))
         .mutation(async ({ctx, input}) => {
@@ -50,8 +77,7 @@ export const productRouter = createTRPCRouter({
                         userId,
                         productId,
                     },
-                });
-
+                })
                 return true
             }
         }),
@@ -78,7 +104,7 @@ export const productRouter = createTRPCRouter({
                 },
             },
             include: {favouriteProducts: true},
-        });
+        })
 
         return products.map((product) => ({
             ...product,

@@ -9,19 +9,16 @@ import {
     NumberInput,
     type NumberInputHandlers,
     rem,
-    TextInput,
-    Timeline
+    TextInput
 } from "@mantine/core";
 import {IconArrowLeft, IconArrowRight, IconMinus, IconPlus} from "@tabler/icons-react";
 import ProductItem from "~/components/ProductItem";
 import type {FunctionComponent} from "react";
 import React, {useEffect, useRef, useState} from 'react';
 import ShopByCategoryItem from "~/components/ShopByCategoryItem";
-import ShopTheLookItem from "~/components/ShopTheLookItem";
 import {modals} from "@mantine/modals";
 import AddItemModal from "~/components/modals/AddItemModal";
-import {Product} from "@prisma/client";
-import {toast} from "react-hot-toast";
+import {useProductStore} from "~/stores/product";
 
 const images: string[] = [
     'https://www.promostyl.com/wp-content/uploads/2019/06/fenty-brand-campaign-002-without-logo-url-glen-luchford-1558621091.jpg',
@@ -44,62 +41,8 @@ const ShopByCategorySection: FunctionComponent = () => {
     </Grid>
 }
 
-const ShopTheLookSection: FunctionComponent = () => {
-    return <Grid className='px-36'>
-        <Grid.Col span={4}>
-            <ShopTheLookItem/>
-        </Grid.Col>
-        <Grid.Col span={4}>
-            <ShopTheLookItem/>
-        </Grid.Col>
-        <Grid.Col span={4}>
-            <ShopTheLookItem/>
-        </Grid.Col>
-    </Grid>
-}
-
-const SubscribeSection: FunctionComponent = () => {
-    return <div
-        className='pt-2 pb-8 flex-col space-y-2 justify-center items-center bg-gradient-to-r from-pink-950 via-gray-800 to-pink-950'>
-        <div className="text-center text-5xl font-['Montserrat'] font-bold text-white self-start">
-            Subscribe
-        </div>
-        <div className="flex flex-row gap-8 relative w-full justify-center items-center">
-            <TextInput
-                placeholder="Name"
-                size='xl'
-                withAsterisk
-                required
-            />
-            <TextInput
-                placeholder="E-Mail"
-                size='xl'
-                withAsterisk
-                required
-            />
-            <button
-                className="bg-[#0a232d] flex flex-col justify-center relative h-16 items-center px-20 text-center text-2xl font-['Montserrat'] font-semibold text-white hover:bg-white hover:text-black transition-colors ease-in duration-500">
-                Join
-            </button>
-        </div>
-    </div>
-}
-
 const GiftCardSection: FunctionComponent = () => {
     return <div className='flex flex-col space-y-2 px-16 py-6'>
-        <div className="text-4xl font-['Play'] w-full">
-            Track order
-        </div>
-        <div className="text-4xl font-['Play'] w-full">
-            Order No. #123456
-        </div>
-        <Timeline active={2} color='dark' bulletSize='36'>
-            <Timeline.Item title="Cart" className='text-3xl font-["Play"] leading-[8px] w-full'/>
-            <Timeline.Item title="Confirm Order" className='text-3xl font-["Play"] leading-[8px] w-full'/>
-            <Timeline.Item title="Payment" className='text-3xl font-["Play"] leading-[8px] w-full'/>
-            <Timeline.Item title="Dispatched for delivery" className='text-3xl font-["Play"] leading-[8px] w-full'/>
-            <Timeline.Item title="Delivered" className='text-3xl font-["Play"] leading-[8px] w-full'/>
-        </Timeline>
         <div
             className="bg-[url(https://file.rendit.io/n/64oyOyvacDb0fBimw6RV.png)] bg-cover bg-50%_50% bg-blend-normal flex flex-row justify-start gap-6 relative w-full items-center px-1">
             <img
@@ -174,15 +117,14 @@ const GiftCardSection: FunctionComponent = () => {
 }
 
 const ProductsSection: FunctionComponent = () => {
-    const [products, setProducts] = useState<(Product & { isFavourite: boolean })[]>([])
-    const productsQuery = api.product.getAll.useQuery()
+    const {products, setProducts} = useProductStore()
+
+    const productQuery = api.product.getAll.useQuery()
 
     useEffect(() => {
-        if (!productsQuery.isSuccess) return
-        setProducts(productsQuery.data)
-    }, [productsQuery])
-
-    if (!productsQuery.isSuccess) return null
+        if (!productQuery.isSuccess) return
+        setProducts(productQuery.data)
+    }, [productQuery.isSuccess])
 
     return <Grid className='bg-[#272727] p-36'>
         {products.map(p => (
@@ -249,8 +191,6 @@ export default function Home() {
                     </Carousel>
                     <ProductsSection/>
                     <ShopByCategorySection/>
-                    <ShopTheLookSection/>
-                    <SubscribeSection/>
                     <GiftCardSection/>
                 </div>
             </main>

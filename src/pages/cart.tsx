@@ -1,5 +1,5 @@
-import React, {FunctionComponent, useState} from 'react';
-import {Alert, Checkbox, Table} from "@mantine/core";
+import React, {type FunctionComponent, useState} from 'react';
+import {Alert, Checkbox, Table, Timeline} from "@mantine/core";
 import {QuantityInput} from "~/pages/index";
 import {useCartStore} from "~/stores/cart";
 import {api} from "~/utils/api";
@@ -71,6 +71,20 @@ const Cart = () => {
                     We Accept Khalti
                 </div>
             </div>
+
+            <div className="text-4xl font-['Play'] w-full mt-8">
+                Track order
+            </div>
+            <div className="text-4xl font-['Play'] w-full">
+                Order No. #123456
+            </div>
+            <Timeline active={2} color='dark' bulletSize='36'>
+                <Timeline.Item title="Cart" className='text-3xl font-["Play"] leading-[8px] w-full'/>
+                <Timeline.Item title="Confirm Order" className='text-3xl font-["Play"] leading-[8px] w-full'/>
+                <Timeline.Item title="Payment" className='text-3xl font-["Play"] leading-[8px] w-full'/>
+                <Timeline.Item title="Dispatched for delivery" className='text-3xl font-["Play"] leading-[8px] w-full'/>
+                <Timeline.Item title="Delivered" className='text-3xl font-["Play"] leading-[8px] w-full'/>
+            </Timeline>
         </div>
     )
 }

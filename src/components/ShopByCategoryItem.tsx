@@ -18,11 +18,6 @@ const ShopByCategoryItem = () => {
                             <div className="text-white text-[12px] font-semibold leading-loose">Go to Jersey Section</div>
                         </div>
                     </div>
-                    <div className='w-12'/>
-                    <div className='pr-4 flex flex-col space-y-2 justify-end'>
-                        <ActionIcon className='bg-black rounded-full'><IconHeart size="1rem"/></ActionIcon>
-                        <ActionIcon className='bg-black rounded-full'><IconShoppingCart size="1rem"/></ActionIcon>
-                    </div>
                 </div>
             </div>
         </div>
