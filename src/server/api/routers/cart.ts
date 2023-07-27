@@ -81,7 +81,7 @@ export const cartRouter = createTRPCRouter({
     getGiftCards: protectedProcedure
         .query(({ctx}) => {
             const userId = ctx.auth.userId
-            ctx.prisma.giftCard.aggregate({
+            return ctx.prisma.giftCard.aggregate({
                 where: {userId},
                 _sum: {amount: true},
             })
