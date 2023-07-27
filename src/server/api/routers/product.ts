@@ -49,6 +49,33 @@ export const productRouter = createTRPCRouter({
                 isFavourite: ctx.auth.userId == null ? false : product.favouriteProducts.some((favProduct) => favProduct.productId === product.id),
             }))
         }),
+    getByCategory: publicProcedure
+        .input(z.object({category: z.string().nonempty(), query: z.string().nullish()}))
+        .mutation(async ({ctx, input}) => {
+            const products = await ctx.prisma.product.findMany({
+                include: {
+                    favouriteProducts: {
+                        where: {
+                            userId: ctx.auth.userId ?? undefined,
+                        },
+                        select: {
+                            productId: true,
+                        },
+                    },
+                },
+                where: {
+                    name: {
+                        contains: input.query ?? undefined,
+                    },
+                    category: input.category,
+                }
+            })
+
+            return products.map((product) => ({
+                ...product,
+                isFavourite: ctx.auth.userId == null ? false : product.favouriteProducts.some((favProduct) => favProduct.productId === product.id),
+            }))
+        }),
     toggleFavourite: protectedProcedure
         .input(z.object({productId: z.string().nonempty()}))
         .mutation(async ({ctx, input}) => {
