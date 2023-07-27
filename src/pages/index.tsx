@@ -1,7 +1,17 @@
 import Head from "next/head";
 import {api} from "~/utils/api";
 import {Carousel} from "@mantine/carousel";
-import {ActionIcon, createStyles, Grid, Image, NumberInput, type NumberInputHandlers, rem} from "@mantine/core";
+import {
+    ActionIcon,
+    createStyles,
+    Grid,
+    Group,
+    Image,
+    NumberInput,
+    type NumberInputHandlers,
+    Radio,
+    rem
+} from "@mantine/core";
 import {IconArrowLeft, IconArrowRight, IconMinus, IconPlus} from "@tabler/icons-react";
 import ProductItem from "~/components/ProductItem";
 import type {FunctionComponent} from "react";
@@ -31,6 +41,8 @@ const ShopByCategorySection: FunctionComponent = () => {
 }
 
 const GiftCardSection: FunctionComponent = () => {
+    const [denos, setDenos] = useState('')
+    const [quantity, setQuantity] = useState(1)
     return <div className='flex flex-col space-y-2 px-16 py-6'>
         <div
             className="bg-[url(https://file.rendit.io/n/64oyOyvacDb0fBimw6RV.png)] bg-cover bg-50%_50% bg-blend-normal flex flex-row justify-start gap-6 relative w-full items-center px-1">
@@ -47,42 +59,21 @@ const GiftCardSection: FunctionComponent = () => {
                     className="text-4xl font-['Morganite'] font-bold tracking-[0.8] text-[#fefefe] relative w-1/5 h-[8.75%] mb-1 ml-3">
                     Denominations
                 </div>
-                <div className="flex flex-row justify-start gap-px relative items-center mb-2 ml-3">
-                    <div
-                        className="border-solid border-[#608fa3] bg-[#608fa2] relative w-6 shrink-0 h-6 mt-px mr-2 border-2"/>
-                    <div
-                        className="whitespace-nowrap text-xl font-['Montserrat'] font-medium tracking-[0.6] text-black mr-8 relative">
-                        Rs. 1000
-                    </div>
-                    <div
-                        className="border-solid border-[#608fa3] bg-[#608fa2] mr-3 relative w-6 shrink-0 h-6 border-2"/>
-                    <div className="text-xl font-['Montserrat'] font-medium tracking-[0.6] text-black mr-8 relative">
-                        Rs.2000
-                    </div>
-                    <div className="border-solid border-[#608fa3] bg-[#608fa2] relative w-6 shrink-0 h-6 border-2"/>
-                    <div className="text-xl font-['Montserrat'] font-medium tracking-[0.6] text-black relative">
-                        Rs.2500
-                    </div>
-                </div>
-                <div className="flex flex-row justify-start gap-4 relative items-center mb-4 ml-2">
-                    <div
-                        className="border-solid border-[#608fa3] bg-[#608fa2] relative w-6 shrink-0 h-6 mb-1 mr-px border-2"/>
-                    <div
-                        className="text-xl font-['Montserrat'] font-medium tracking-[0.6] text-black self-start mr-5 relative">
-                        Rs.5000
-                    </div>
-                    <div className="border-solid border-[#608fa3] bg-[#608fa2] relative w-6 shrink-0 h-6 border-2"/>
-                    <div
-                        className="text-xl font-['Montserrat'] font-medium tracking-[0.6] text-black self-start relative">
-                        Rs.10000
-                    </div>
-                </div>
+                <Radio.Group className='pb-8' size='lg' onChange={setDenos}>
+                    <Group mt="xs">
+                        <Radio value="1000" label="Rs.1000"/>
+                        <Radio value="2000" label="Rs.2000"/>
+                        <Radio value="3000" label="Rs.3000"/>
+                        <Radio value="5000" label="Rs.5000"/>
+                        <Radio value="10000" label="Rs.10000"/>
+                    </Group>
+                </Radio.Group>
                 <div className="text-4xl font-['Morganite'] fon
                 t-bold tracking-[0.8] text-[#fefefe] ml-2 relative">
                     Quantity
                 </div>
                 <div className='my-4 ml-4 bg-red-900'>
-                    <QuantityInput/>
+                    <QuantityInput onChange={setQuantity}/>
                 </div>
                 <div className="flex flex-row justify-start ml-px gap-6 relative items-center">
                     <button
