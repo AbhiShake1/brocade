@@ -58,6 +58,7 @@ model GiftCard {
   code   String
   amount Float
   userId String @unique
+  deno String
 
   @@index([userId])
 }

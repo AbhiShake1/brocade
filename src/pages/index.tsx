@@ -20,6 +20,7 @@ import ShopByCategoryItem from "~/components/ShopByCategoryItem";
 import {modals} from "@mantine/modals";
 import AddItemModal from "~/components/modals/AddItemModal";
 import {useProductStore} from "~/stores/product";
+import {toast} from "react-hot-toast";
 
 const images: string[] = [
     'https://www.promostyl.com/wp-content/uploads/2019/06/fenty-brand-campaign-002-without-logo-url-glen-luchford-1558621091.jpg',
@@ -41,8 +42,15 @@ const ShopByCategorySection: FunctionComponent = () => {
 }
 
 const GiftCardSection: FunctionComponent = () => {
-    const [denos, setDenos] = useState('')
+    const [deno, setDeno] = useState('')
     const [quantity, setQuantity] = useState(1)
+    const mutation = api.cart.addGiftCard.useMutation({
+        onSuccess: () => {
+            toast.dismiss()
+            toast.success('Successfully purchased')
+        }
+    })
+
     return <div className='flex flex-col space-y-2 px-16 py-6'>
         <div
             className="bg-[url(https://file.rendit.io/n/64oyOyvacDb0fBimw6RV.png)] bg-cover bg-50%_50% bg-blend-normal flex flex-row justify-start gap-6 relative w-full items-center px-1">
@@ -59,7 +67,7 @@ const GiftCardSection: FunctionComponent = () => {
                     className="text-4xl font-['Morganite'] font-bold tracking-[0.8] text-[#fefefe] relative w-1/5 h-[8.75%] mb-1 ml-3">
                     Denominations
                 </div>
-                <Radio.Group className='pb-8' size='lg' onChange={setDenos}>
+                <Radio.Group className='pb-8' size='lg' onChange={setDeno}>
                     <Group mt="xs">
                         <Radio value="1000" label="Rs.1000"/>
                         <Radio value="2000" label="Rs.2000"/>
@@ -78,8 +86,11 @@ const GiftCardSection: FunctionComponent = () => {
                 <div className="flex flex-row justify-start ml-px gap-6 relative items-center">
                     <button
                         className="bg-[#25262b] flex flex-col justify-center pl-12 relative w-[282px] shrink-0 h-16 items-start rounded-sm">
-                        <div
-                            className="whitespace-nowrap text-xl font-['Open_Sans'] font-semibold leading-[31px] text-white relative">
+                        <div onClick={() => {
+                            if (deno.length == 0) return toast.error('Denomination is required')
+                            mutation.mutate({quantity, deno})
+                        }}
+                             className="whitespace-nowrap text-xl font-['Open_Sans'] font-semibold leading-[31px] text-white relative">
                             Buy it Now
                         </div>
                     </button>

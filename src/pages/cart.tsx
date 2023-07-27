@@ -7,6 +7,7 @@ import type {Product} from "@prisma/client";
 
 const Cart = () => {
     const {cartItems} = useCartStore()
+    const denoQuery = api.cart.getGiftCards.useQuery()
 
     if (!cartItems?.productInCart) return null
 

@@ -56,12 +56,34 @@ export const cartRouter = createTRPCRouter({
         .input(z.object({productId: z.string().nonempty()}))
         .mutation(async ({ctx, input}) => {
             const {productId} = input
-            const {prisma} = ctx
             const userId = ctx.auth.userId
+            const cart = await ctx.prisma.cart.findFirst({where: {userId}})
 
             await ctx.prisma.productInCart.update({
-                where: {productId},
+                where: {productId, id: cart!.id},
                 data: {quantity: {decrement: 1}}
+            })
+        }),
+    addGiftCard: protectedProcedure
+        .input(z.object({deno: z.string().nonempty(), quantity: z.number().int().positive()}))
+        .mutation(({ctx, input}) => {
+            const {deno, quantity} = input
+            const userId = ctx.auth.userId
+            return ctx.prisma.giftCard.create({
+                data: {
+                    userId,
+                    deno,
+                    amount: quantity,
+                    code: '',
+                }
+            })
+        }),
+    getGiftCards: protectedProcedure
+        .query(({ctx}) => {
+            const userId = ctx.auth.userId
+            ctx.prisma.giftCard.aggregate({
+                where: {userId},
+                _sum: {amount: true},
             })
         }),
 });
