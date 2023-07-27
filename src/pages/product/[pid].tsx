@@ -201,7 +201,7 @@ const Index = () => {
                         src="https://file.rendit.io/n/1fenC1C0hVX3RX9wXTJH.svg"
                         className="min-h-0 min-w-0 relative w-16 mb-3 ml-5"
                     />
-                    <div className='flex flex-row space-x-4 mb-4'>
+                    <div className='flex flex-row space-x-4 my-4'>
                         <Chip.Group value={size} onChange={value => setSize(value?.toString())}>
                             <Chip value="S" size='xl' variant='filled' radius='sm' color='dark'>S</Chip>
                             <Chip value="M" size='xl' variant='filled' radius='sm' color='dark'>M</Chip>
@@ -210,28 +210,7 @@ const Index = () => {
                             <Chip value="XXL" size='xl' variant='filled' radius='sm' color='dark'>XXL</Chip>
                         </Chip.Group>
                     </div>
-                    <div className="text-2xl font-['Montserrat'] tracking-[0.72] text-black relative mb-px ml-5">
-                        Color
-                    </div>
-                    <img
-                        src="https://file.rendit.io/n/1fenC1C0hVX3RX9wXTJH.svg"
-                        className="min-h-0 min-w-0 relative w-16 mb-4 ml-5"
-                    />
-                    <div className="flex flex-row justify-between gap-5 relative items-center mb-10 ml-5">
-                        <img
-                            src="https://file.rendit.io/n/yZFoZoRjoXY62JdOgxpW.svg"
-                            className="min-h-0 min-w-0 relative w-10 shrink-0"
-                        />
-                        <img
-                            src="https://file.rendit.io/n/a3bv43bkBbzk9aoEkezI.svg"
-                            className="min-h-0 min-w-0 relative w-10 shrink-0"
-                        />
-                        <img
-                            src="https://file.rendit.io/n/zP5bQ2eHrt7KALWhW5a4.svg"
-                            className="min-h-0 min-w-0 relative w-10 shrink-0"
-                        />
-                    </div>
-                    <div className="flex flex-row justify-start gap-3 relative items-center mb-10 ml-5">
+                    <div className="flex flex-row justify-start gap-3 relative items-center mb-10 ml-5 mt-4">
                         <img
                             src="https://file.rendit.io/n/cL3XwIF6r2qRqEPz2yA7.svg"
                             className="min-h-0 min-w-0 relative w-8 shrink-0"
