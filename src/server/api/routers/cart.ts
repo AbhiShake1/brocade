@@ -1,5 +1,6 @@
 import {z} from "zod";
 import {createTRPCRouter, protectedProcedure} from "~/server/api/trpc";
+import {Simulate} from "react-dom/test-utils";
 
 export const cartRouter = createTRPCRouter({
     get: protectedProcedure.query(({ctx}) => {
@@ -16,18 +17,32 @@ export const cartRouter = createTRPCRouter({
         .mutation(async ({ctx, input}) => {
             const {productId} = input
             const userId = ctx.auth.userId
-            await ctx.prisma.cart.update({
-                where: {userId},
-                data: {
-                    productInCart: {
-                        upsert: {
-                            where: {productId},
-                            update: {productId, quantity: {increment: 1}},
-                            create: {productId, quantity: 1}
+            try {
+                await ctx.prisma.cart.findFirstOrThrow({where: {productInCart: {some: {productId}}, AND: {userId}}})
+                await ctx.prisma.cart.update({
+                    where: {userId},
+                    data: {
+                        productInCart: {
+                            updateMany: {
+                                where: {productId},
+                                data: {quantity: {increment: 1}}
+                            },
                         }
                     }
-                }
-            })
+                })
+            } catch (_) {
+                await ctx.prisma.cart.update({
+                    where: {userId},
+                    data: {
+                        productInCart: {
+                            connect: {
+                                productId,
+                            }
+                        }
+                    }
+                })
+            }
+
             return await ctx.prisma.productInCart.findUnique({
                 where: {productId}
             })
@@ -65,7 +80,7 @@ export const cartRouter = createTRPCRouter({
             })
         }),
     addGiftCard: protectedProcedure
-        .input(z.object({deno: z.string().nonempty(), quantity: z.number().int().positive()}))
+        .input(z.object({deno: z.string().nonempty(), quantity: z.number().int().positive()},))
         .mutation(({ctx, input}) => {
             const {deno, quantity} = input
             const userId = ctx.auth.userId
@@ -81,9 +96,8 @@ export const cartRouter = createTRPCRouter({
     getGiftCards: protectedProcedure
         .query(({ctx}) => {
             const userId = ctx.auth.userId
-            return ctx.prisma.giftCard.aggregate({
-                where: {userId},
-                _sum: {amount: true},
+            return ctx.prisma.giftCard.findMany({
+                where: {userId}
             })
         }),
 });

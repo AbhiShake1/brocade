@@ -1,5 +1,5 @@
 import React, {type FunctionComponent, useState} from 'react';
-import {Alert, Checkbox, Table, Timeline} from "@mantine/core";
+import {Alert, Checkbox, Group, Radio, Table, Timeline} from "@mantine/core";
 import {QuantityInput} from "~/pages/index";
 import {useCartStore} from "~/stores/cart";
 import {api} from "~/utils/api";
@@ -73,19 +73,40 @@ const Cart = () => {
                 </div>
             </div>
 
-            <div className="text-4xl font-['Play'] w-full mt-8">
-                Track order
+            <div className='flex flex-col space-y-6'>
+                <h1 className='mt-12 pl-2'>Gift Cards</h1>
+                {
+                    denoQuery.isSuccess && denoQuery.data.map(deno=>{
+                        return (
+                            <div key={deno.id} className='flex flex-col space-y-2 px-16 py-6'>
+                                <div
+                                    className="bg-[url(https://file.rendit.io/n/64oyOyvacDb0fBimw6RV.png)] bg-cover bg-50%_50% bg-blend-normal flex flex-row justify-start gap-6 relative w-full items-center px-1">
+                                    <img
+                                        src="https://file.rendit.io/n/oGbEZet5JXvpBkDdntSY.png"
+                                        className="min-h-0 min-w-0 relative my-0"
+                                    />
+                                    <div className="self-start flex flex-col justify-start mt-3 gap-px relative w-1/2 items-start">
+                                        <div
+                                            className="text-6xl font-['Morganite'] font-black tracking-[1.44] leading-[87.5px] text-white self-center mb-2 relative w-full h-[18.04%]">
+                                            Brocade Gift Card
+                                        </div>
+                                        <div
+                                            className="text-4xl font-['Morganite'] font-bold tracking-[0.8] text-[#fefefe] relative w-1/5 h-[8.75%] mb-1 ml-3">
+                                            Denominations
+                                        </div>
+                                        <h1 className='pb-8 pl-3 text-gray-400'>Rs.{deno.deno}</h1>
+                                        <div className="text-4xl font-['Morganite'] fon
+                t-bold tracking-[0.8] text-[#fefefe] ml-2 relative">
+                                            Quantity
+                                        </div>
+                                        <h1 className='pb-8 pl-3 text-gray-400'>{deno.amount}</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        )
+                    })
+                }
             </div>
-            <div className="text-4xl font-['Play'] w-full">
-                Order No. #123456
-            </div>
-            <Timeline active={2} color='dark' bulletSize='36'>
-                <Timeline.Item title="Cart" className='text-3xl font-["Play"] leading-[8px] w-full'/>
-                <Timeline.Item title="Confirm Order" className='text-3xl font-["Play"] leading-[8px] w-full'/>
-                <Timeline.Item title="Payment" className='text-3xl font-["Play"] leading-[8px] w-full'/>
-                <Timeline.Item title="Dispatched for delivery" className='text-3xl font-["Play"] leading-[8px] w-full'/>
-                <Timeline.Item title="Delivered" className='text-3xl font-["Play"] leading-[8px] w-full'/>
-            </Timeline>
         </div>
     )
 }

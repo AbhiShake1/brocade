@@ -56,8 +56,8 @@ model Cart {
 model GiftCard {
   id     String @id @default(cuid())
   code   String
-  amount Float
-  userId String @unique
+  amount Int @default(1)
+  userId String
   deno String
 
   @@index([userId])

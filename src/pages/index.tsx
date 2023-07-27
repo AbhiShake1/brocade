@@ -48,7 +48,12 @@ const GiftCardSection: FunctionComponent = () => {
         onSuccess: () => {
             toast.dismiss()
             toast.success('Successfully purchased')
-        }
+        },
+        onError: err =>{
+            toast.dismiss()
+            toast.error(err.message)
+        },
+        onMutate: ()=>toast.loading("Checking out...")
     })
 
     return <div className='flex flex-col space-y-2 px-16 py-6'>
