@@ -1,6 +1,11 @@
-import React, {type FunctionComponent, useState} from 'react';
+import React, {type FunctionComponent, useEffect, useState} from 'react';
 import {Chip, Progress, Rating} from "@mantine/core";
 import ProductPreview from "~/components/ProductPreview";
+import {api} from "~/utils/api";
+import {useRouter} from "next/router";
+import {IconHeart, IconHeartFilled} from "@tabler/icons-react";
+import {toast} from "react-hot-toast";
+import {useCartStore} from "~/stores/cart";
 
 interface RatingBarProps {
     rating: number
@@ -132,34 +137,62 @@ function CustomerReviewsStarSection() {
 }
 
 const Index = () => {
-    const [size, setSize] = useState('S');
+    const [size, setSize] = useState('S')
+    const router = useRouter()
+    const {addToCart} = useCartStore()
+    const [isFav, setIsFav] = useState(false)
+
+    const addToCartMutation = api.cart.addToCart.useMutation({
+        onError: err => {
+            toast.remove()
+            toast.error(err.message)
+        },
+        onSuccess: data => {
+            toast.remove()
+            if (!data) return
+            toast.success('Added to cart')
+            addToCart(data)
+        },
+        onMutate: () => toast.loading('Adding to cart...')
+    })
+
+    const id = router.query.pid as string
+
+    const markFavouriteMutation = api.product.toggleFavourite.useMutation({
+        onSuccess: setIsFav,
+        onError: err => toast.error(err.message),
+    })
+
+    const productQuery = api.product.getById.useQuery(id)
+
+    useEffect(() => {
+        if (!productQuery.isSuccess) return
+        setIsFav(productQuery.data.isFavourite)
+    }, [productQuery.isSuccess])
+
+    if (!productQuery.isSuccess) return null
+
+    const {imageUrl, category, name, description, price, isFavourite} = productQuery.data
 
     return (
         <div className="overflow-hidden flex flex-col gap-2 relative w-full items-start pt-6 pb-4 px-12">
             <div className="flex flex-row justify-start mb-16 gap-10 relative w-5/6 items-start">
-                <ProductPreview imageUrls={[
-                    'https://file.rendit.io/n/EIBZfPJtjuEStvRvNGqA.png',
-                    'https://file.rendit.io/n/NETDsFkUmG8GUV8koPAH.png',
-                    'https://file.rendit.io/n/d9EGT8btXEr5wo4mVWZJ.png',
-                    'https://file.rendit.io/n/o52wnRDuFxw2cEhbfIDP.png',
-                ]}/>
+                <ProductPreview imageUrls={Array.from({length: 4}).map(() => imageUrl!)}/>
                 <div className="self-end flex flex-col justify-start mb-3 gap-px relative w-2/5 h-[852px] items-start">
                     <div
                         className="whitespace-nowrap text-2xl font-['Montserrat'] tracking-[0.72] text-[#2e96ad] relative mb-4 ml-5">
-                        Jersey & Jackets
+                        {category}
                     </div>
                     <div
                         className="whitespace-nowrap text-3xl font-['Montserrat'] tracking-[0.96] text-black relative mb-4 ml-5">
-                        Racing Pullover - 1
+                        {name}
                     </div>
                     <div
                         className="text-sm font-['Montserrat'] font-bold tracking-[0.45] text-black self-end relative w-full h-[7.28%] mb-4 mr-2">
-                        Lorem ipsum dolor sit amet consectetur adipiscing elit orci tincidunt
-                        sollicitudin sociis felis, feugiat et congue vivamus facilisis risus
-                        parturient ac conubia ornare.
+                        {description}
                     </div>
                     <div className="text-3xl font-['Montserrat'] tracking-[0.96] text-black relative mb-6 ml-5">
-                        Rs.2500
+                        Rs.{price}
                     </div>
                     <div className="text-2xl font-['Montserrat'] tracking-[0.72] text-black relative mb-px ml-5">
                         Size
@@ -208,20 +241,23 @@ const Index = () => {
                             Check Availability in Store
                         </div>
                     </div>
-                    <div className="flex flex-row justify-start gap-8 relative w-4/5 items-center mb-10 ml-5">
-                        <div className="bg-[#07161d] flex flex-col justify-center relative w-3/4 h-16 items-center">
+                    <div className="flex flex-row justify-start gap-8 relative w-4/5 items-center mb-10 ml-5"
+                         onClick={() => {
+                             addToCartMutation.mutate({
+                                 productId: id,
+                             })
+                         }}>
+                        <button className="bg-[#07161d] flex flex-col justify-center relative w-3/4 h-16 items-center">
                             <div
                                 className="whitespace-nowrap text-xl font-['Montserrat'] tracking-[0.66] text-white relative">
                                 Add to Cart
                             </div>
-                        </div>
-                        <div
-                            className="bg-[url(https://file.rendit.io/n/CJ8thw25penlgL12ERs4.svg)] bg-cover bg-50%_50% bg-blend-normal flex flex-col justify-center relative w-16 shrink-0 h-16 items-center">
-                            <img
-                                src="https://file.rendit.io/n/N0nQK9U2lzdI6c3lLd2U.svg"
-                                className="min-h-0 min-w-0 relative w-10"
-                            />
-                        </div>
+                        </button>
+                        <button onClick={() => markFavouriteMutation.mutate({productId: id})}
+                                className="bg-[url(https://file.rendit.io/n/CJ8thw25penlgL12ERs4.svg)] bg-cover bg-50%_50% bg-blend-normal flex flex-col justify-center relative w-16 shrink-0 h-16 items-center">
+                            {isFav ? <IconHeartFilled className='text-red-600' size='2.3rem'/> :
+                                <IconHeart color='white' size='2.3rem'/>}
+                        </button>
                     </div>
                     <div
                         className="text-sm font-['Montserrat'] font-bold tracking-[0.45] text-black self-center justify-start relative w-full h-[17.96%]">

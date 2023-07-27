@@ -23,6 +23,28 @@ export const productRouter = createTRPCRouter({
                 isFavourite: ctx.auth.userId == null ? false : product.favouriteProducts.some((favProduct) => favProduct.productId === product.id),
             }))
         }),
+    getById: publicProcedure
+        .input(z.string())
+        .query(async ({ctx, input}) => {
+            const product = await ctx.prisma.product.findFirst({
+                include: {
+                    favouriteProducts: {
+                        where: {
+                            userId: ctx.auth.userId ?? undefined,
+                        },
+                        select: {
+                            productId: true,
+                        },
+                    },
+                },
+                where: {id: input}
+            })
+
+            return {
+                ...product,
+                isFavourite: ctx.auth.userId == null || product == null ? false : product.favouriteProducts.some((favProduct) => favProduct.productId === product.id),
+            }
+        }),
     getBySearch: publicProcedure
         .input(z.string())
         .mutation(async ({ctx, input}) => {
