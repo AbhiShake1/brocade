@@ -42,7 +42,7 @@ const ProductItem: FunctionComponent<Props> = ({id, imageUrl, name, price, isFav
     return <div className="w-[269px] h-[331px] relative">
         <div
             className="w-[269px] h-[331px] left-0 top-0 absolute bg-zinc-300 bg-opacity-30 rounded-3xl shadow backdrop-blur-[15px]"></div>
-        <button onClick={() => void push(`product/${id}`)}>
+        <button onClick={() => void push(`/product/${id}`)}>
             <Image alt='' width={1080} height={1080}
                    className="w-[230px] h-[236px] left-[20px] top-[19px] absolute rounded-3xl object-cover"
                    src={imageUrl}/>
