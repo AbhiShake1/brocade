@@ -1,4 +1,4 @@
-import React, {type FunctionComponent, useState} from 'react';
+import React, {type FunctionComponent, useEffect, useState} from 'react';
 import {Alert, Checkbox, Table} from "@mantine/core";
 import {QuantityInput} from "~/pages/index";
 import {useCartStore} from "~/stores/cart";
@@ -7,10 +7,16 @@ import type {Product} from "@prisma/client";
 import CheckoutButton from "~/components/CheckoutButton";
 import {toast} from "react-hot-toast";
 
+interface CartWithCheck {
+    id: string
+    checked: boolean
+}
+
 const Cart = () => {
     const {cartItems} = useCartStore()
     const denoQuery = api.cart.getGiftCards.useQuery()
-    const [allChecked, setAllChecked] = useState(true)
+    const [allChecked, setAllChecked] = useState(false)
+    const [checks, setChecks] = useState<CartWithCheck[]>([])
 
     if (!cartItems?.productInCart) return null
 
@@ -29,7 +35,11 @@ const Cart = () => {
                 <thead>
                 <tr>
                     <th className='max-w-[0px]'><Checkbox size='xl' color='dark' checked={allChecked}
-                                                          onChange={e => setAllChecked(e.currentTarget.checked)}
+                                                          onChange={e => {
+                                                              const allChecked = e.currentTarget.checked
+                                                              setChecks(c => c.map(i => ({...i, checked: allChecked})))
+                                                              setAllChecked(allChecked)
+                                                          }}
                                                           label='All'/>
                     </th>
                     <th>
@@ -61,7 +71,16 @@ const Cart = () => {
                 </thead>
                 <tbody>
                 {cartItems.productInCart.map(({product: item, quantity}) => (
-                    <CartRow quantity={quantity} item={item} key={item.id}/>
+                    <CartRow quantity={quantity} item={item} key={item.id}
+                             onInit={() => {
+                                 if (checks.filter(c => c.id == item.id).length == 0)
+                                     checks.push({id: item.id, checked: false})
+                             }}
+                             isChecked={checks.filter(s => s.id == item.id)[0]?.checked ?? false}
+                             onCheckChange={(val) => {
+                                 setChecks(p => p.map(i => i.id == item.id ? {...i, checked: val} : i))
+                                 setAllChecked(checks.every(c => !c.checked))
+                             }}/>
                 ))}
                 </tbody>
             </Table>
@@ -124,11 +143,18 @@ const Cart = () => {
 interface CartRowProps {
     item: Product
     quantity: number
+    onInit: () => void
+    isChecked: boolean
+    onCheckChange: (value: boolean) => void
 }
 
-const CartRow: FunctionComponent<CartRowProps> = ({item, quantity}) => {
+const CartRow: FunctionComponent<CartRowProps> = ({item, quantity, onInit, isChecked, onCheckChange}) => {
     const {updateCart} = useCartStore()
     const [quan, setQuan] = useState(quantity)
+
+    useEffect(() => {
+        onInit()
+    }, [])
 
     const updateCartMutation = api.cart.updateCart.useMutation({
         onSuccess: item => {
@@ -140,7 +166,9 @@ const CartRow: FunctionComponent<CartRowProps> = ({item, quantity}) => {
     })
 
     return <tr key={item.id}>
-        <td><Checkbox size='xl' color='dark' checked={true}/></td>
+        <td><Checkbox size='xl' color='dark' checked={isChecked} onChange={e => {
+            onCheckChange(e.currentTarget.checked)
+        }}/></td>
         <td><img src={item.imageUrl}/></td>
         <td>
             <Alert variant='filled' radius='xl' color='dark' className='max-w-[108px]'>
