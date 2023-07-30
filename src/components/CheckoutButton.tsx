@@ -3,6 +3,7 @@
 import KhaltiCheckout from "khalti-web";
 import type {FunctionComponent} from "react";
 import {toast} from "react-hot-toast";
+import {Button} from "@mantine/core";
 
 interface Props {
     amount: number
@@ -37,7 +38,8 @@ const CheckoutButton: FunctionComponent<Props> = ({amount, onSuccess}) => {
     const checkout = new KhaltiCheckout(config)
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
-    return <button onClick={() => checkout.show({amount: amount*100})}>Pay Rs.{amount}</button>
+    return <Button size='xl' variant='outline' onClick={() => checkout.show({amount: amount * 100})}>Pay
+        Rs.{amount}</Button>
 }
 
 export default CheckoutButton;
