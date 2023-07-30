@@ -10,6 +10,7 @@ import {toast} from "react-hot-toast";
 const Cart = () => {
     const {cartItems} = useCartStore()
     const denoQuery = api.cart.getGiftCards.useQuery()
+    const [allChecked, setAllChecked] = useState(true)
 
     if (!cartItems?.productInCart) return null
 
@@ -27,7 +28,10 @@ const Cart = () => {
             <Table>
                 <thead>
                 <tr>
-                    <th className='max-w-[0px]'><Checkbox size='xl' color='dark' checked={true} label='All'/></th>
+                    <th className='max-w-[0px]'><Checkbox size='xl' color='dark' checked={allChecked}
+                                                          onChange={e => setAllChecked(e.currentTarget.checked)}
+                                                          label='All'/>
+                    </th>
                     <th>
                         <div className="text-3xl font-['Play']">
                             Item
