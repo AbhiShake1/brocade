@@ -10,6 +10,7 @@ import {toast} from "react-hot-toast";
 interface CartWithCheck {
     id: string
     checked: boolean
+    quantity: number
 }
 
 const Cart = () => {
@@ -74,12 +75,14 @@ const Cart = () => {
                     <CartRow quantity={quantity} item={item} key={item.id}
                              onInit={() => {
                                  if (checks.filter(c => c.id == item.id).length == 0)
-                                     checks.push({id: item.id, checked: false})
+                                     checks.push({id: item.id, quantity, checked: false})
                              }}
                              isChecked={checks.filter(s => s.id == item.id)[0]?.checked ?? false}
                              onCheckChange={(val) => {
-                                 setChecks(p => p.map(i => i.id == item.id ? {...i, checked: val} : i))
-                                 setAllChecked(checks.every(c => !c.checked))
+                                 setChecks(p => p.map(i => {
+                                     setAllChecked(val)
+                                     return i.id == item.id ? {...i, checked: val} : i
+                                 }))
                              }}/>
                 ))}
                 </tbody>
@@ -166,9 +169,7 @@ const CartRow: FunctionComponent<CartRowProps> = ({item, quantity, onInit, isChe
     })
 
     return <tr key={item.id}>
-        <td><Checkbox size='xl' color='dark' checked={isChecked} onChange={e => {
-            onCheckChange(e.currentTarget.checked)
-        }}/></td>
+        <td><Checkbox size='xl' color='dark' checked={isChecked} onChange={() => onCheckChange(!isChecked)}/></td>
         <td><img src={item.imageUrl}/></td>
         <td>
             <Alert variant='filled' radius='xl' color='dark' className='max-w-[108px]'>
