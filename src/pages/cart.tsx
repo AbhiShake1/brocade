@@ -11,6 +11,7 @@ interface CartWithCheck {
     id: string
     checked: boolean
     quantity: number
+    price: number
 }
 
 const Cart = () => {
@@ -20,6 +21,8 @@ const Cart = () => {
     const [checks, setChecks] = useState<CartWithCheck[]>([])
 
     if (!cartItems?.productInCart) return null
+
+    const total = checks.reduce((sum, item) => item.checked ? sum + (item.price * item.quantity) : sum, 0);
 
     return (
         <div className='py-8 px-16'>
@@ -75,8 +78,12 @@ const Cart = () => {
                     <CartRow quantity={quantity} item={item} key={item.id}
                              onInit={() => {
                                  if (checks.filter(c => c.id == item.id).length == 0)
-                                     checks.push({id: item.id, quantity, checked: false})
+                                     checks.push({id: item.id, quantity, checked: false, price: item.price})
                              }}
+                             onQuantityChange={quantity => setChecks(p => p.map(i => i.id == item.id ? {
+                                 ...i,
+                                 quantity
+                             } : i))}
                              isChecked={checks.filter(s => s.id == item.id)[0]?.checked ?? false}
                              onCheckChange={(val) => {
                                  setChecks(p => p.map(i => {
@@ -96,7 +103,7 @@ const Cart = () => {
                 {/*        <Button color='dark' variant='outline'>Pick</Button>*/}
                 {/*    </div>*/}
                 {/*</div>*/}
-                <CheckoutButton amount={200} onSuccess={() => {
+                <CheckoutButton amount={total} onSuccess={() => {
                     toast.success('checked out')
                 }}/>
                 {/*<div className="text-2xl font-['Play'] leading-[8px] w-[463px] h-[2.04%] mb-6 ml-12 mt-4">*/}
@@ -149,9 +156,17 @@ interface CartRowProps {
     onInit: () => void
     isChecked: boolean
     onCheckChange: (value: boolean) => void
+    onQuantityChange: (value: number) => void
 }
 
-const CartRow: FunctionComponent<CartRowProps> = ({item, quantity, onInit, isChecked, onCheckChange}) => {
+const CartRow: FunctionComponent<CartRowProps> = ({
+                                                      item,
+                                                      quantity,
+                                                      onInit,
+                                                      isChecked,
+                                                      onCheckChange,
+                                                      onQuantityChange
+                                                  }) => {
     const {updateCart} = useCartStore()
     const [quan, setQuan] = useState(quantity)
 
@@ -181,10 +196,13 @@ const CartRow: FunctionComponent<CartRowProps> = ({item, quantity, onInit, isChe
         </td>
         <td>
             <div className='w-28'>
-                <QuantityInput defaultValue={quantity} onChange={quantity => updateCartMutation.mutate({
-                    quantity,
-                    productId: item.id
-                })}/>
+                <QuantityInput defaultValue={quantity} onChange={quantity => {
+                    onQuantityChange(quantity)
+                    updateCartMutation.mutate({
+                        quantity,
+                        productId: item.id
+                    })
+                }}/>
             </div>
         </td>
         <td>
