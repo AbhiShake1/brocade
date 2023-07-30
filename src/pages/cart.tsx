@@ -1,9 +1,11 @@
 import React, {type FunctionComponent, useState} from 'react';
-import {Alert, Checkbox, Group, Radio, Table, Timeline} from "@mantine/core";
+import {Alert, Checkbox, Table} from "@mantine/core";
 import {QuantityInput} from "~/pages/index";
 import {useCartStore} from "~/stores/cart";
 import {api} from "~/utils/api";
 import type {Product} from "@prisma/client";
+import CheckoutButton from "~/components/CheckoutButton";
+import {toast} from "react-hot-toast";
 
 const Cart = () => {
     const {cartItems} = useCartStore()
@@ -68,15 +70,18 @@ const Cart = () => {
                 {/*        <Button color='dark' variant='outline'>Pick</Button>*/}
                 {/*    </div>*/}
                 {/*</div>*/}
-                <div className="text-2xl font-['Play'] leading-[8px] w-[463px] h-[2.04%] mb-6 ml-12 mt-4">
-                    We Accept Khalti
-                </div>
+                <CheckoutButton amount={200} onSuccess={() => {
+                    toast.success('checked out')
+                }}/>
+                {/*<div className="text-2xl font-['Play'] leading-[8px] w-[463px] h-[2.04%] mb-6 ml-12 mt-4">*/}
+                {/*    We Accept Khalti*/}
+                {/*</div>*/}
             </div>
 
             <div className='flex flex-col space-y-6'>
                 <h1 className='mt-12 pl-2'>Gift Cards</h1>
                 {
-                    denoQuery.isSuccess && denoQuery.data.map(deno=>{
+                    denoQuery.isSuccess && denoQuery.data.map(deno => {
                         return (
                             <div key={deno.id} className='flex flex-col space-y-2 px-16 py-6'>
                                 <div
@@ -85,7 +90,8 @@ const Cart = () => {
                                         src="https://file.rendit.io/n/oGbEZet5JXvpBkDdntSY.png"
                                         className="min-h-0 min-w-0 relative my-0"
                                     />
-                                    <div className="self-start flex flex-col justify-start mt-3 gap-px relative w-1/2 items-start">
+                                    <div
+                                        className="self-start flex flex-col justify-start mt-3 gap-px relative w-1/2 items-start">
                                         <div
                                             className="text-6xl font-['Morganite'] font-black tracking-[1.44] leading-[87.5px] text-white self-center mb-2 relative w-full h-[18.04%]">
                                             Brocade Gift Card
