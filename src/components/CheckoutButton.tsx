@@ -12,7 +12,7 @@ interface Props {
 
 const CheckoutButton: FunctionComponent<Props> = ({amount, onSuccess}) => {
     const config = {
-        "publicKey": "test_public_key_dc74e0fd57cb46cd93832aee0a507256",
+        "publicKey": "live_public_key_2296dea938c34688963955288713a863",
         "productIdentity": "1234567890",
         "productName": "Drogon",
         "productUrl": "http://gameofthrones.com/buy/Dragons",
