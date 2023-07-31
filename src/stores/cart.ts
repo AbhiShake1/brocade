@@ -9,6 +9,7 @@ interface CartStore {
     cartItems: CartWithProduct;
     addToCart: (item: ProductInCart) => void;
     updateCart: (item: ProductInCart, quantity: number) => void;
+    removeFromCartWhere: (func: (value: Prod) => boolean) => void;
     removeFromCart: (itemId: string) => void;
     clearCart: () => void;
 }
@@ -34,6 +35,14 @@ export const useCartStore = create<CartStore>((set, get) => ({
             } : p)
         }
     })),
+    removeFromCartWhere: (predicate) => {
+        set((state) => ({
+            cartItems: {
+                ...state.cartItems,
+                ...state.cartItems.productInCart?.filter(i => !predicate(i)) ?? [],
+            },
+        }))
+    },
     removeFromCart: (itemId) =>
         set((state) => ({
             cartItems: {

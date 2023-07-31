@@ -15,7 +15,7 @@ interface CartWithCheck {
 }
 
 const Cart = () => {
-    const {cartItems} = useCartStore()
+    const {cartItems, removeFromCartWhere} = useCartStore()
     const denoQuery = api.cart.getGiftCards.useQuery()
     const [allChecked, setAllChecked] = useState(false)
     const [checks, setChecks] = useState<CartWithCheck[]>([])
@@ -105,6 +105,7 @@ const Cart = () => {
                 {/*</div>*/}
                 <CheckoutButton amount={total} onSuccess={() => {
                     toast.success('checked out')
+                    removeFromCartWhere(p => checks.some(c => c.checked))
                 }}/>
                 {/*<div className="text-2xl font-['Play'] leading-[8px] w-[463px] h-[2.04%] mb-6 ml-12 mt-4">*/}
                 {/*    We Accept Khalti*/}
