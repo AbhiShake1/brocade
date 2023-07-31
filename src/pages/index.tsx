@@ -21,13 +21,13 @@ import {modals} from "@mantine/modals";
 import AddItemModal from "~/components/modals/AddItemModal";
 import {useProductStore} from "~/stores/product";
 import {toast} from "react-hot-toast";
+import {useUser} from "@clerk/nextjs";
 
 const images: string[] = [
-    'https://www.promostyl.com/wp-content/uploads/2019/06/fenty-brand-campaign-002-without-logo-url-glen-luchford-1558621091.jpg',
-    'https://www.promostyl.com/wp-content/uploads/2019/06/fenty-brand-campaign-002-without-logo-url-glen-luchford-1558621091.jpg',
-    'https://www.promostyl.com/wp-content/uploads/2019/06/fenty-brand-campaign-002-without-logo-url-glen-luchford-1558621091.jpg',
-    'https://www.promostyl.com/wp-content/uploads/2019/06/fenty-brand-campaign-002-without-logo-url-glen-luchford-1558621091.jpg',
-];
+    '/1.jpg',
+    '/2.jpg',
+    '/3.jpg',
+]
 
 const ShopByCategorySection: FunctionComponent = () => {
     const query = api.product.getCategories.useQuery()
@@ -49,11 +49,11 @@ const GiftCardSection: FunctionComponent = () => {
             toast.dismiss()
             toast.success('Successfully purchased')
         },
-        onError: err =>{
+        onError: err => {
             toast.dismiss()
             toast.error(err.message)
         },
-        onMutate: ()=>toast.loading("Checking out...")
+        onMutate: () => toast.loading("Checking out...")
     })
 
     return <div className='flex flex-col space-y-2 px-16 py-6'>
@@ -114,6 +114,7 @@ const GiftCardSection: FunctionComponent = () => {
 
 const ProductsSection: FunctionComponent = () => {
     const {products, setProducts, addProducts} = useProductStore()
+    const user = useUser()
 
     const productQuery = api.product.getAll.useQuery()
 
@@ -128,30 +129,32 @@ const ProductsSection: FunctionComponent = () => {
                 <ProductItem {...p}/>
             </Grid.Col>
         ))}
-        <Grid.Col span={4}>
-            <button onClick={() => modals.open({
-                title: 'Add new item',
-                centered: true,
-                children: <AddItemModal onPost={p => {
-                    modals.closeAll()
-                    addProducts([p])
-                }}/>
-            })}>
-                <div className="w-[269px] h-[331px] relative">
-                    <div
-                        className="w-[269px] h-[331px] left-0 top-0 absolute bg-zinc-300 bg-opacity-30 rounded-3xl shadow backdrop-blur-[15px] flex flex-col items-center justify-center">
-                        <h1 className='font-medium text-6xl scale-[4]'>+</h1>
+        {
+            (user.user?.unsafeMetadata?.isAdmin ?? false) && <Grid.Col span={4}>
+                <button onClick={() => modals.open({
+                    title: 'Add new item',
+                    centered: true,
+                    children: <AddItemModal onPost={p => {
+                        modals.closeAll()
+                        addProducts([p])
+                    }}/>
+                })}>
+                    <div className="w-[269px] h-[331px] relative">
+                        <div
+                            className="w-[269px] h-[331px] left-0 top-0 absolute bg-zinc-300 bg-opacity-30 rounded-3xl shadow backdrop-blur-[15px] flex flex-col items-center justify-center">
+                            <h1 className='font-medium text-6xl scale-[4]'>+</h1>
+                        </div>
                     </div>
-                </div>
-            </button>
-        </Grid.Col>
+                </button>
+            </Grid.Col>
+        }
     </Grid>
 }
 
 export default function Home() {
     const slides = images.map((url) => (
         <Carousel.Slide key={url}>
-            <Image src={url}/>
+            <Image src={url} height={650}/>
         </Carousel.Slide>
     ));
 
