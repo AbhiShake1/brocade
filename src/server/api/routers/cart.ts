@@ -1,6 +1,5 @@
 import {z} from "zod";
 import {createTRPCRouter, protectedProcedure} from "~/server/api/trpc";
-import {Simulate} from "react-dom/test-utils";
 
 export const cartRouter = createTRPCRouter({
     get: protectedProcedure.query(({ctx}) => {
@@ -17,8 +16,12 @@ export const cartRouter = createTRPCRouter({
         .mutation(async ({ctx, input}) => {
             const {productId} = input
             const userId = ctx.auth.userId
-            try {
-                await ctx.prisma.cart.findFirstOrThrow({where: {productInCart: {some: {productId}}, AND: {userId}}})
+
+            const existing = await ctx.prisma.productInCart.findFirst({
+                where: {productId, cart: {userId}}
+            })
+
+            if (existing) {
                 await ctx.prisma.cart.update({
                     where: {userId},
                     data: {
@@ -30,21 +33,25 @@ export const cartRouter = createTRPCRouter({
                         }
                     }
                 })
-            } catch (_) {
+            } else {
+                const cart = await ctx.prisma.cart.findUnique({where: {userId}})
                 await ctx.prisma.cart.update({
                     where: {userId},
                     data: {
                         productInCart: {
-                            connect: {
-                                productId,
+                            connectOrCreate: {
+                                where: {
+                                    productId_cartId: {productId, cartId: cart!.id},
+                                },
+                                create: {productId, quantity: 1}
                             }
                         }
                     }
                 })
             }
 
-            return await ctx.prisma.productInCart.findUnique({
-                where: {productId}
+            return await ctx.prisma.productInCart.findFirst({
+                where: {productId, cart: {userId}}
             })
         }),
     updateCart: protectedProcedure
