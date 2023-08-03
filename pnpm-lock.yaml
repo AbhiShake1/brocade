@@ -76,9 +76,6 @@ dependencies:
   khalti-checkout-web:
     specifier: ^2.2.0
     version: 2.2.0(webpack@4.46.0)
-  khalti-web:
-    specifier: ^1.1.1
-    version: 1.1.1
   next:
     specifier: ^13.4.2
     version: 13.4.2(react-dom@18.2.0)(react@18.2.0)
@@ -4393,12 +4390,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
       - webpack
-    dev: false
-
-  /khalti-web@1.1.1:
-    resolution: {integrity: sha512-Va5VoDDQxOwXdzR4Amy8NSlYoh+cXDrdtesnIbE2nWwJ52GjwgsYgkAWGYaUDmYMRfz8hL5ud1Qe5YNeipJyBw==}
-    dependencies:
-      validatex: 0.3.1
     dev: false
 
   /kind-of@3.2.2:

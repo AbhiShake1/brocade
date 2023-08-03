@@ -1,6 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import KhaltiCheckout from "khalti-web";
+import KhaltiCheckout from "khalti-checkout-web";
 import type {FunctionComponent} from "react";
 import {toast} from "react-hot-toast";
 import {Button} from "@mantine/core";
@@ -12,7 +12,7 @@ interface Props {
 
 const CheckoutButton: FunctionComponent<Props> = ({amount, onSuccess}) => {
     const config = {
-        "publicKey": "live_public_key_2296dea938c34688963955288713a863",
+        "publicKey": "test_public_key_1afd1d2aa7cb409e9a89df9e83c10741",
         "productIdentity": "1234567890",
         "productName": "Drogon",
         "productUrl": "http://gameofthrones.com/buy/Dragons",
