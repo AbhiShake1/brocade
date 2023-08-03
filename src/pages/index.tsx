@@ -35,9 +35,9 @@ const ShopByCategorySection: FunctionComponent = () => {
     if (!query.isSuccess) return null
 
     return <Grid className='px-36'>
-        <Grid.Col span={4}>
-            {query.data.map(p => <ShopByCategoryItem category={p.category} imageUrl={p.imageUrl} key={p.id}/>)}
-        </Grid.Col>
+        {query.data.map(p => <Grid.Col span={4}>
+            <ShopByCategoryItem category={p.category} imageUrl={p.imageUrl} key={p.id}/>
+        </Grid.Col>)}
     </Grid>
 }
 
