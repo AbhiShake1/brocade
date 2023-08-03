@@ -19,7 +19,7 @@ const config = {
     defaultLocale: "en",
   },
   images: {
-    domains: ['www.promostyl.com', 'file.rendit.io', 'uploadthing.com']
+    domains: ['www.promostyl.com', 'file.rendit.io', 'uploadthing.com', 'imgur.com']
   }
 };
 export default config;
