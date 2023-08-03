@@ -38,7 +38,8 @@ const CheckoutButton: FunctionComponent<Props> = ({amount, onSuccess}) => {
     const checkout = new KhaltiCheckout(config)
 
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call,@typescript-eslint/no-unsafe-member-access,@typescript-eslint/no-unsafe-return
-    return <Button size='xl' variant='outline' onClick={() => checkout.show({amount: amount * 100})}>Pay
+    return <Button size='xl' disabled={amount == 0} variant='outline'
+                   onClick={() => checkout.show({amount: amount * 100})}>Pay
         Rs.{amount}</Button>
 }
 
